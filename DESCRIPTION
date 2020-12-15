@@ -1,0 +1,22 @@
+Package: spatialsurvey
+Title: Gives access to a range of Design and Model-based estimators for spatial surveys, particulraly systemtic spatial surveys
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Craig",
+           family = "Marsh",
+           role = c("aut", "cre"),
+           email = "craig.marsh10@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    TMB (>= 1.7.16),
+    INLA,
+    sp,
+    ggplot2,
+    RANN
+LinkingTo: 
+    TMB
+RoxygenNote: 6.1.1
