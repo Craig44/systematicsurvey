@@ -118,6 +118,7 @@ polygon(x = c(survey_xlim[1], survey_xlim[1], survey_xlim[2], survey_xlim[2]), y
 coordinates(sample_data) <- ~ x + y
 class(sample_data)
 ## 
+log(0.5 * sd(sample_data@data$count / sample_data@data$area))
 fit_poisson = SpatialModelEstimator(spatial_df = sample_data, formula = count ~ 1, mesh = mesh, extrapolation_grid = proj_df, family = 0, link = 0, bias_correct = T)
 fit_neg_bin = SpatialModelEstimator(spatial_df = sample_data, formula = count ~ 1, mesh = mesh, extrapolation_grid = proj_df, family = 1, link = 0,  bias_correct = T)
 names(fit_out)
@@ -133,9 +134,21 @@ N_hat_poisson = fit_poisson$gmrf_sd_report$value[names(fit_poisson$gmrf_sd_repor
 N_hat_neg_bin = fit_neg_bin$gmrf_sd_report$value[names(fit_neg_bin$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
 N_hat_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$value[names(fit_poisson$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
 N_hat_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$value[names(fit_neg_bin$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
+ln_N_hat_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$value[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_non_sample_Total"]
+ln_N_hat_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$value[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_non_sample_Total"]
+
 ## standard errors
-N_se_poisson_bias = fit_poisson$gmrf_sd_report$sd[names(fit_poisson$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
-N_se_neg_bin_bias = fit_neg_bin$gmrf_sd_report$sd[names(fit_neg_bin$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
+N_se_poisson_bias = fit_poisson$gmrf_sd_report$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
+N_se_neg_bin_bias = fit_neg_bin$gmrf_sd_report$sd[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_Total"]
+ln_N_se_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
+ln_N_se_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$sd[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_Total"]
+## in theory these should be the same
+fit_poisson$gmrf_sd_report$unbiased$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
+fit_poisson$gmrf_sd_report$unbiased$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_non_sample_Total"]
+## Walk CIs
+exp(ln_N_hat_poisson_bias + c(-2, 2) * ln_N_se_poisson_bias)
+exp(ln_N_hat_neg_bin_bias + c(-2, 2) * ln_N_se_neg_bin_bias)
+
 
 N_hat_poisson
 N_hat_neg_bin
@@ -165,9 +178,18 @@ boxlet_estimator = BoxletEstimator(spatial_df = sample_data, survey_polygon = su
 ## function requires matrix format.
 survey_data_mat = matrix(sample_data@data$count, nrow = n_row, ncol = n_col, byrow = T)
 post_stratified_estimator = PoststratifiedOverlappingEstimator(y = survey_data_mat, sample_area = quad_height * quad_width, survey_area = survey_area, 1, 1)
+post_stratified_nonoverlapping_estimator = PoststratifiedNonOverlappingEstimator(y = survey_data_mat, sample_area = quad_height * quad_width, survey_area = survey_area, 2, 2)
+srs_estiamtor = kappa^2 * var(sample_data@data$y_i) / (nrow(sample_data@data))
+sample_raster = raster::raster(survey_data_mat)
+adjust_correlation = CorrelationAdjusted(sample_raster, quad_height * quad_width, survey_area = survey_area)
+adjust_correlation$rho
+## compare estimators
 sqrt(post_stratified_estimator)
+sqrt(post_stratified_nonoverlapping_estimator)
+sqrt(srs_estiamtor)
+sqrt(adjust_correlation$var_est)
 sqrt(boxlet_estimator$var_total_boxlet)
 N_se_poisson_bias
 N_se_neg_bin_bias
-## SRS
-sqrt((var(sample_data@data$count) / nrow(sample_data@data)) * kappa^2)
+
+

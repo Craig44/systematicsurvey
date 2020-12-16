@@ -1,13 +1,13 @@
 #' PoststratifiedOverlappingEstimator 
-#' @detail a functon that replicates the variacnce estimator from Millar & Olsen 1995
+#' @details a functon that replicates the variacnce estimator from Millar & Olsen 1995
 #' Post stratified variance estimator
 #' @param y matrix of data which represents data from an areal view of the survey, use NA's for no data/out of bounds
 #' @param sample_area area of each sampling unit, either a single value of all the same, otherwise a matrix of equal dimensions
 #' @param survey_area scalar for survey area
-#' @nx_strat number of sampling units to the right (x-axis) in each strata
-#' @nt_strat number of sampling units in the below (y-axis) in each strata
+#' @param nx_strat number of sampling units to the right (x-axis) in each strata
+#' @param ny_strat number of sampling units in the below (y-axis) in each strata
 #' @export
-#' @return Post-stratified variance estimator
+#' @return Post-stratified variance estimator for the poopulation total based on overlapping strata
 #' 
 PoststratifiedOverlappingEstimator = function(y, sample_area, survey_area, nx_strat = 1, ny_strat = 1) {
   ## overlapping from Millar Olsen 1995
@@ -15,7 +15,7 @@ PoststratifiedOverlappingEstimator = function(y, sample_area, survey_area, nx_st
   n_row = nrow(y)
   n_col = ncol(y)
   area_mat = NULL;
-  if (class(sample_area) == "numeric" & length(area) == 1) {
+  if (class(sample_area) == "numeric" & length(sample_area) == 1) {
     area_mat = matrix(sample_area, nrow = n_row, ncol = n_col)
   } else if (class(sample_area) == "matrix" & all(dim(sample_area) %in% dim(y)) ) {
     area_mat = sample_area
@@ -30,6 +30,6 @@ PoststratifiedOverlappingEstimator = function(y, sample_area, survey_area, nx_st
       var_over = var_over +  sum((y_h - mean_val)^2) / (sum(!is.na(y_h)) - 1)
     }
   }
-  result = (1 / (sum(area_mat) / survey_area))^2 * var_over
+  result = (survey_area / sum(area_mat))^2 * var_over
   return(result)
 }

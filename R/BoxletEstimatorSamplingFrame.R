@@ -1,4 +1,6 @@
-#' BoxletEstimatorSamplingFrame an auxillary functon that replicates the Boxlet variance estimator from Fewster 2011
+#' BoxletEstimatorSamplingFrame 
+#' @details 
+#' an auxillary functon that replicates the Boxlet variance estimator from Fewster 2011
 #' Assumes rectangle/square survey region, assumes width and height of sampling units are constant quadrants or transects
 #' @param survey_polygon a spatial polygon that is the same coordinate reference as data. 
 #' @param quad_width width of every sampling unit

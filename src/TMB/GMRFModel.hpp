@@ -88,9 +88,9 @@ Type GMRFModel(objective_function<Type>* obj) {
   // Parameters
   PARAMETER_VECTOR( betas );              // Shoule be expanded for covariates, then need model matrix and projection model matrix
   PARAMETER( ln_kappa );                  // spatial decay/range parameter
-  PARAMETER( ln_tau );                    // scaled inverse of spatial marginal variance
-  PARAMETER_VECTOR( omega );              // spatial random effects
-  PARAMETER( ln_phi );                    // log (negative binomial overdispersion) ignred if Poisson
+  PARAMETER( ln_tau );                    // precision of GMRF covariance, note marginal variance of the GMRF is a function of kappa and tau 
+  PARAMETER_VECTOR( omega );              // spatial random effect/latent variables
+  PARAMETER( ln_phi );                    // overdispersion parameter, cv = gamma, sd = normal, phi = Neg Bin
 
   int i;
   vector<Type> nll(2);
@@ -153,6 +153,8 @@ Type GMRFModel(objective_function<Type>* obj) {
 
   Type fitted_non_sample_Total = (abund_proj * pred_indicator).sum();
   Type log_fitted_non_sample_Total = log(fitted_non_sample_Total);
+  Type log_fitted_Total = log(fitted_non_sample_Total + y.sum());
+  
   /////////////////
   // Reports
   /////////////////
@@ -161,6 +163,8 @@ Type GMRFModel(objective_function<Type>* obj) {
   REPORT( log_fitted_non_sample_Total );
   ADREPORT( log_fitted_non_sample_Total );
   REPORT( abund_proj );
+  REPORT( log_fitted_Total );
+  ADREPORT( log_fitted_Total );
   //ADREPORT( abund_proj );
   REPORT( linear_proj );
   REPORT( omega_proj );
