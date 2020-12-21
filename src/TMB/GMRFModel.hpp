@@ -70,12 +70,13 @@ Type GMRFModel(objective_function<Type>* obj) {
   using namespace Eigen;
   using namespace density;
   // Observation level inputs
-  DATA_VECTOR( y );                       // Response vector
+  DATA_VECTOR( y );                       // Response yariable length = n
   DATA_VECTOR_INDICATOR (keep , y);       // NOTICE " keep " this is for OSA residuals
   DATA_MATRIX( model_matrix ) ;           // model matrix To account for covariates dim[n,p]
   DATA_VECTOR( area );                    // Area for each observation sampling unit
   DATA_INTEGER( family );                 // response distribution 0 = Poisson, 1 = Negative Binomial, 2 = Gaussian, 3 = Gamma
   DATA_INTEGER( link ) ;                  // 0 = log, 1 = logit, 2 = probit, 3 = inverse, 4 = identity
+  DATA_INTEGER( simulate_state ) ;        // not used in estimation, but if you build a model, you can use the simulate() call on it.
   // extrapolation inputs
   DATA_VECTOR( proj_area ) ;              // Area for each projection grid
   DATA_MATRIX( proj_model_matrix ) ;      // projection model matrix  dim[nrow(P),p]
@@ -109,7 +110,23 @@ Type GMRFModel(objective_function<Type>* obj) {
   vector<Type> mu(eta.size());
   for (i = 0; i < mu.size(); i++)
     mu(i) = area(i) * inverse_linkfun(eta(i), link);
+
+  /////////////////
+  // Extrapolation
+  /////////////////
+  vector<Type> omega_proj = (Proj * omega) / tau;                         // Project GF to all projected points account for tau
+  vector<Type> linear_proj = proj_model_matrix * betas + omega_proj;     // this is in log space
+  vector<Type> mu_proj(linear_proj.size());// = Proj_Area * exp(linear_proj);
+  for (i = 0; i < linear_proj.size(); i++)
+    mu_proj(i) = proj_area(i) * inverse_linkfun(linear_proj(i), link);
+
+  Type fitted_non_sample_Total = (mu_proj * pred_indicator).sum();
+  Type log_fitted_non_sample_Total = log(fitted_non_sample_Total);
+  Type log_fitted_Total = log(fitted_non_sample_Total + y.sum());
+  
+  /////////////////
   // Observation likelihood
+  /////////////////
   Type s1, s2;
   Type tmp_loglik;
   for (i = 0; i < y.size(); i++){
@@ -142,18 +159,47 @@ Type GMRFModel(objective_function<Type>* obj) {
       nll(1) -= keep(i) * tmp_loglik;
     }
   }
-  /////////////////
-  // Extrapolation
-  /////////////////
-  vector<Type> omega_proj = (Proj * omega) / tau;                         // Project GF to all projected points account for tau
-  vector<Type> linear_proj = proj_model_matrix * betas + omega_proj;     // this is in log space
-  vector<Type> abund_proj(linear_proj.size());// = Proj_Area * exp(linear_proj);
-  for (i = 0; i < linear_proj.size(); i++)
-    abund_proj(i) = proj_area(i) * inverse_linkfun(linear_proj(i), link);
-
-  Type fitted_non_sample_Total = (abund_proj * pred_indicator).sum();
-  Type log_fitted_non_sample_Total = log(fitted_non_sample_Total);
-  Type log_fitted_Total = log(fitted_non_sample_Total + y.sum());
+  
+  SIMULATE {
+    // Simulate the population over the entire domain.
+    vector<Type> y_sim(mu_proj.size());
+    if(simulate_state == 1) {
+      // Simulate a completley new GF
+      GMRF(Q).simulate(omega);
+    }
+    omega_proj = (Proj * omega) / tau; // Project GF to all projected points account for tau
+    linear_proj = proj_model_matrix * betas + omega_proj;     // this is in log space
+    for (i = 0; i < linear_proj.size(); i++)
+      mu_proj(i) = proj_area(i) * inverse_linkfun(linear_proj(i), link);
+    
+    for (i = 0; i < y_sim.size(); i++){
+      if ( !isNA(y_sim(i)) ) {
+        switch (family) {
+        case gaussian:
+          y_sim(i) = rnorm(mu_proj(i), sqrt(phi));
+          break;
+        case poisson:
+          y_sim(i) = rpois(mu_proj(i));
+          break;
+        case negative_binomial:
+          s1 = mu_proj(i) * (Type(1.0) + mu_proj(i) / phi); // over_dispersion + lambda_sim;
+          y_sim(i) = rnbinom2(mu_proj(i), s1);
+          break;
+        case gamma:
+          s1 = phi;           // shape
+          s2 = mu_proj(i) / phi;   // scale
+          y_sim(i) = rgamma(s1, s2);
+          break;
+        default:
+          error("Family not implemented!");
+        } // End switch
+      }
+    }
+    /////////////////
+    // Reports
+    /////////////////
+    REPORT(y_sim);
+  }
   
   /////////////////
   // Reports
@@ -162,12 +208,12 @@ Type GMRFModel(objective_function<Type>* obj) {
   ADREPORT( fitted_non_sample_Total );   // We can use THorson epsilon method for ADREPORT
   REPORT( log_fitted_non_sample_Total );
   ADREPORT( log_fitted_non_sample_Total );
-  REPORT( abund_proj );
   REPORT( log_fitted_Total );
   ADREPORT( log_fitted_Total );
-  //ADREPORT( abund_proj );
+  //ADREPORT( mu_proj );
   REPORT( linear_proj );
   REPORT( omega_proj );
+  REPORT( mu_proj );
   REPORT( omega ); // should be overwritten with simulated vals.
   REPORT( nll );
   REPORT( mu );

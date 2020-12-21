@@ -7,7 +7,7 @@
 SpatialModelEstimator(spatial_df, formula, mesh, extrapolation_grid,
   family, link, bias_correct = F, control = list(eval.max = 10000,
   iter.max = 10000), convergence = list(grad_tol = 0.001),
-  start_par_list = NULL)
+  start_par_list = NULL, trace_level = "none")
 }
 \arguments{
 \item{spatial_df}{data.frame}
@@ -29,6 +29,8 @@ SpatialModelEstimator(spatial_df, formula, mesh, extrapolation_grid,
 \item{convergence}{list of convergence setting to check}
 
 \item{start_par_list}{list of inital values for optimisaton, if you have conversion issues can be useful to look at alternative starting values}
+
+\item{trace_level}{'none' don't print any information, 'low' print steps in the function 'medium' print gradients of TMB optimisation, 'high' print parameter candidates as well as gradients during oprimisation.}
 }
 \value{
 : list of estimated objects.
