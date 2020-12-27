@@ -8,6 +8,8 @@ library(INLA)
 library(spatialsurvey)
 library(sp)
 library(ggplot2)
+library(gridExtra)
+
 set.seed(123)
 # A square survey domain, no need to be though
 survey_xlim = c(0,100)
@@ -136,9 +138,9 @@ N_hat_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$value[names(fit_poisson
 N_hat_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$value[names(fit_neg_bin$gmrf_sd_report$value) == "fitted_non_sample_Total"] + sum(sample_data$count)
 ln_N_hat_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$value[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_non_sample_Total"]
 ln_N_hat_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$value[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_non_sample_Total"]
-
 ## standard errors
-N_se_poisson_bias = fit_poisson$gmrf_sd_report$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
+N_se_poisson_bias = fit_poisson$gmrf_sd_report$sd[names(fit_poisson$gmrf_sd_report$value) == "fitted_non_sample_Total"]
+ln_N_se_poisson_bias = fit_poisson$gmrf_sd_report$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
 N_se_neg_bin_bias = fit_neg_bin$gmrf_sd_report$sd[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_Total"]
 ln_N_se_poisson_bias = fit_poisson$gmrf_sd_report$unbiased$sd[names(fit_poisson$gmrf_sd_report$value) == "log_fitted_Total"]
 ln_N_se_neg_bin_bias = fit_neg_bin$gmrf_sd_report$unbiased$sd[names(fit_neg_bin$gmrf_sd_report$value) == "log_fitted_Total"]
@@ -148,6 +150,52 @@ fit_poisson$gmrf_sd_report$unbiased$sd[names(fit_poisson$gmrf_sd_report$value) =
 ## Walk CIs
 exp(ln_N_hat_poisson_bias + c(-2, 2) * ln_N_se_poisson_bias)
 exp(ln_N_hat_neg_bin_bias + c(-2, 2) * ln_N_se_neg_bin_bias)
+#############################
+## create obj and simulate
+############################
+MLE_pars = fit_poisson$start_vals
+MLE_pars$betas = fit_poisson$MLE_par["betas"]
+MLE_pars$ln_kappa = fit_poisson$MLE_par["ln_kappa"]
+MLE_pars$ln_tau = fit_poisson$MLE_par["ln_tau"]
+MLE_pars$omega = fit_poisson$MLE_par[names(fit_poisson$MLE_par) %in% "omega"]
+fit_poisson$tmb_data$simulate_state = 0
+poi_obj = TMB::MakeADFun(data = fit_poisson$tmb_data, random = c("omega"), parameters = MLE_pars , map = list("ln_phi" = factor(NA)), DLL = "spatialsurvey_TMBExports", silent = T)
+fit_poisson$tmb_data$simulate_state = 1
+poi_obj_state = TMB::MakeADFun(data = fit_poisson$tmb_data, random = c("omega"), parameters = MLE_pars , map = list("ln_phi" = factor(NA)), DLL = "spatialsurvey_TMBExports", silent = T)
+## look at this
+sim_data = poi_obj$simulate()
+sim_data_state = poi_obj_state$simulate()
+proj_df$y_sim = sim_data$y_sim
+proj_df$y_sim_state = sim_data_state$y_sim
+proj_df$y_fitted = fit_poisson$MLE_gmrf$mu_proj
+fitted_ = ggplot(data = proj_df, aes(x = x, y = y, fill = y_fitted)) +
+  geom_tile()
+simulated_ = ggplot(data = proj_df, aes(x = x, y = y, fill = y_sim)) +
+  geom_tile()
+state_simulated_ = ggplot(data = proj_df, aes(x = x, y = y, fill = y_sim_state)) +
+  geom_tile()
+grid.arrange(fitted_, simulated_, state_simulated_, ncol = 3)
+sum(proj_df$y_sim)
+sum(proj_df$y_sim_state)
+sum(proj_df$y_fitted)
+fit_poisson$MLE_gmrf$fitted_non_sample_Total + sum(sample_data$count)
+sim_model_Ns = vector()
+sim_model_state_Ns = vector()
+for(i in 1:1000) {
+  sim_data = poi_obj$simulate()
+  sim_data_state = poi_obj_state$simulate()
+  sim_model_Ns[i] = sum(sim_data$y_sim)
+  sim_model_state_Ns[i] =  sum(sim_data_state$y_sim)
+  
+}
+sd(sim_model_Ns)
+sd(sim_model_state_Ns)
+
+boxplot(cbind(sim_model_Ns, sim_model_state_Ns))
+abline(h = N_hat_poisson, lwd = 3, lty = 2, col = "red")
+## simulate with new GF
+
+
 
 
 N_hat_poisson

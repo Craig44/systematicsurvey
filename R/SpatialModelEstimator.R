@@ -231,9 +231,9 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
     }
     gmrf_sd_report = NULL
     if (bias_correct) {
-      gmrf_sd_report = TMB::sdreport(obj_gmrf, bias.correct= TRUE, bias.correct.control = list(vars_to_correct = c("fitted_non_sample_Total", "log_fitted_non_sample_Total"), sd = TRUE),  getJointPrecision = F)
+      gmrf_sd_report = TMB::sdreport(obj_gmrf, bias.correct= TRUE, bias.correct.control = list(vars_to_correct = c("fitted_non_sample_Total", "log_fitted_non_sample_Total"), sd = TRUE),  getJointPrecision = T)
     } else {
-      gmrf_sd_report = TMB::sdreport(obj_gmrf,  getJointPrecision = F)
+      gmrf_sd_report = TMB::sdreport(obj_gmrf,  getJointPrecision = T)
     }
     return_list$gmrf_sd_report = gmrf_sd_report
     return_list$gmrf_max_grad = max_grad_this

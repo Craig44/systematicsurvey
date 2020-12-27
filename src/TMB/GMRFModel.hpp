@@ -133,7 +133,7 @@ Type GMRFModel(objective_function<Type>* obj) {
     if ( !isNA(y(i)) ) {
       switch (family) {
       case gaussian:
-        tmp_loglik = dnorm(y(i), mu(i), sqrt(phi), true);
+        tmp_loglik = dnorm(y(i), mu(i), phi, true);
         //SIMULATE{y(i) = rnorm(mu(i), sqrt(phi));}
         break;
       case poisson:
@@ -176,7 +176,7 @@ Type GMRFModel(objective_function<Type>* obj) {
       if ( !isNA(y_sim(i)) ) {
         switch (family) {
         case gaussian:
-          y_sim(i) = rnorm(mu_proj(i), sqrt(phi));
+          y_sim(i) = rnorm(mu_proj(i), phi);
           break;
         case poisson:
           y_sim(i) = rpois(mu_proj(i));
