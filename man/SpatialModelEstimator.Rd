@@ -14,7 +14,7 @@ SpatialModelEstimator(spatial_df, formula, mesh, extrapolation_grid,
 
 \item{formula}{class(formula)  e.g. formula = y ~ 1}
 
-\item{mesh}{data.frame}
+\item{mesh}{an inla.mesh object that has been created before this function is applied}
 
 \item{extrapolation_grid}{data.frame we expect columns names "x", "y", "area"}
 
@@ -33,7 +33,7 @@ SpatialModelEstimator(spatial_df, formula, mesh, extrapolation_grid,
 \item{trace_level}{'none' don't print any information, 'low' print steps in the function 'medium' print gradients of TMB optimisation, 'high' print parameter candidates as well as gradients during oprimisation.}
 }
 \value{
-: list of estimated objects.
+: list of estimated objects and data objects
 }
 \description{
 SpatialModelEstimator

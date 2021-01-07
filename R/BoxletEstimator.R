@@ -12,16 +12,17 @@
 #' @param boxlet_frame_settings list, if  build_boxlet_sampling_frame = T. then these are the parameters passed to the function see ?BoxletEstimatorSamplingFrame
 #' @param trace print messages as function progresses
 #' @export
-#' @import rgeos
-#' @import sp
-#' @import mgcv
+#' @importFrom rgeos gArea
+#' @importFrom stats predict
+#' @importFrom sp coordinates
+#' @importFrom mgcv gam
 #' @return boxlet info, and variance estimator for total
 
 BoxletEstimator = function(spatial_df, survey_polygon, quad_width, quad_height, quad_x_spacing, quad_y_spacing, boxlet_sampling_frame = NULL, boxlet_frame_settings = NULL, trace = F) {
   if(trace)
     cat("Entering: BoxletEstimator()\n")
   if(class(spatial_df) != "SpatialPointsDataFrame")
-    error("spatial_df needs to be of class SpatialPointsDataFrame, please check this.")
+    stop("spatial_df needs to be of class SpatialPointsDataFrame, please check this.")
   col_names_to_check = c("y_i", "area")
   if (!all(col_names_to_check %in% colnames(spatial_df@data))) 
     stop(paste0("spatial_df@data needs to have colnames ", paste0(col_names_to_check, collapse = ", ")))
@@ -60,7 +61,7 @@ BoxletEstimator = function(spatial_df, survey_polygon, quad_width, quad_height, 
   gam_fit = mgcv::gam(formula = y_i ~ offset(log(area)) + s(x, y, bs = "tp"), data = spatial_df@data, family = poisson(link = log))
   #gam_fit = gam::gam(formula = count ~ s(x_mid,y_mid, df = 20), data = Data, family = poisson(link = log), offset = log(area))
   ## Predict over all boxlets
-  boxlet_sampling_frame$boxlet_df$rate  = predict(gam_fit, newdata = boxlet_sampling_frame$boxlet_df, type = "response")
+  boxlet_sampling_frame$boxlet_df$rate  = stats::predict(gam_fit, newdata = boxlet_sampling_frame$boxlet_df, type = "response")
   musum <- sum(boxlet_sampling_frame$boxlet_df$rate)
   density = sum(spatial_df@data$y_i) / sum(spatial_df@data$area)
   N_hat = density * survey_area
@@ -68,8 +69,8 @@ BoxletEstimator = function(spatial_df, survey_polygon, quad_width, quad_height, 
   ## predict the striplet distribution X
   if(trace) {
     ## plot gam over survey domain
-    ggplot(data = boxlet_sampling_frame$boxlet_df, aes(x = x, spatial_df = spatial_df, fill = rate)) +
-      geom_tile()
+    #ggplot(data = boxlet_sampling_frame$boxlet_df, aes(x = x, spatial_df = spatial_df, fill = rate)) +
+    #  geom_tile()
   }
   pj = boxlet_sampling_frame$boxlet_df$rate / sum(boxlet_sampling_frame$boxlet_df$rate)
   Q_hat = as.vector(pj %*% boxlet_sampling_frame$boxlet_indicator_matrix) ## doesn't need to sum = 1

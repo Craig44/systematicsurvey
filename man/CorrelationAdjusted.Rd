@@ -7,7 +7,7 @@
 CorrelationAdjusted(y, sample_area, survey_area)
 }
 \arguments{
-\item{y}{}
+\item{y}{sample data of class "RasterLayer" see an example for how this is created.}
 
 \item{sample_area}{area of each sampling unit which has to be a single value i.e. sampling unit area are all the same}
 

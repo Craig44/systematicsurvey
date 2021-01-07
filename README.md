@@ -8,6 +8,9 @@ Craig Marsh
 
 ## License
 
+### TODO
+
+- [ ] Fix devtools::document() is not including useDynLib(spatialsurvey, .registration=TRUE); useDynLib(spatialsurvey_TMBExports) which relates to [this thread](https://github.com/mlysy/TMBtools/issues/4)
 
 
 

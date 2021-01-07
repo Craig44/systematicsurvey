@@ -1,10 +1,10 @@
 #' CorrelationAdjusted 
 #' @details a functon that evaluates the variacnce estimator for population total, with an adjustment based on the spatial autocorrelation, based on Morans I 
-#' @param y 
+#' @param y sample data of class "RasterLayer" see an example for how this is created.
 #' @param sample_area area of each sampling unit which has to be a single value i.e. sampling unit area are all the same
 #' @param survey_area scalar for survey area
 #' @export
-#' @import raster
+#' @importFrom raster Moran
 #' @return Spatial autocorrealtion variance estimator for the poopulation total
 #' 
 CorrelationAdjusted = function(y, sample_area, survey_area) {

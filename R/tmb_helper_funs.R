@@ -5,7 +5,8 @@
 #' @param prec precision matrix, derived from sdreport(obj, getJointPrecision = T)
 #' @param n.sims integer number of simulations
 #' @param random_seed integer seed
-#' @return simulated parameters.
+#' @importFrom stats rnorm
+#' @return matrix of simulated parameter values with dimensions [n.sims x length(mu)]
 rmvnorm_prec <- function(mu, prec, n.sims, random_seed ) {
   set.seed( random_seed )
   z = matrix(rnorm(length(mu) * n.sims), ncol=n.sims)

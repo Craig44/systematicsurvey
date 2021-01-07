@@ -5,7 +5,7 @@
 #'
 #' @param spatial_df data.frame 
 #' @param formula class(formula)  e.g. formula = y ~ 1  
-#' @param mesh data.frame 
+#' @param mesh an inla.mesh object that has been created before this function is applied
 #' @param extrapolation_grid data.frame we expect columns names "x", "y", "area"
 #' @param family 0 = Poisson, 1 = Negative Binomial, 2 = Gaussian, 3 = Gamma 
 #' @param link link function 0 = log, 1 = logit, 2 = probit, 3 = inverse, 4 = identity
@@ -15,18 +15,20 @@
 #' @param start_par_list list of inital values for optimisaton, if you have conversion issues can be useful to look at alternative starting values
 #' @param trace_level 'none' don't print any information, 'low' print steps in the function 'medium' print gradients of TMB optimisation, 'high' print parameter candidates as well as gradients during oprimisation. 
 #' @export
-#' @import sp
-#' @import INLA
-#' @import RANN
-#' @import TMB
-#' @return: list of estimated objects.
-
+#' @importFrom sp coordinates
+#' @importFrom INLA inla.mesh.projector inla.spde2.matern inla.spde.make.A
+#' @importFrom RANN nn2
+#' @importFrom TMB MakeADFun
+#' @importFrom stats model.matrix nlminb optimHess poisson rnorm sd terms var
+#' @return: list of estimated objects and data objects
 
 SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, family, link, bias_correct = F, control = list(eval.max = 10000, iter.max = 10000), convergence = list(grad_tol = 0.001), start_par_list = NULL, trace_level = "none") {
   if(!trace_level %in% c("none", "low", "medium","high"))
     stop(paste0("trace_level needs to be 'none', 'low', 'medium','high'"))
   if(class(spatial_df) != "SpatialPointsDataFrame")
     stop(paste0("spatial_df needs to be of class SpatialPointsDataFrame, see the example for more information"))
+  if(class(mesh) != "inla.mesh")
+    stop(paste0("mesh needs to be of class inla.mesh, see the example for more information"))
   if(!family %in% c(0:3))
     stop(paste0("family needs to be a value from 0 to 3, for a valid distribution"))
   if(!link %in% c(0:4))
@@ -53,9 +55,9 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
   model_matrix = model.matrix(object = formula, data = spatial_df@data)
   ## will need to create a dummy variable for the response variable in the extrapolation grid.
   proj_model_matrix = model.matrix(object = formula, data = extrapolation_grid)
-  ## Index prediction sampled locations, these wont be included with 
+  ## Index prediction sampled locations, these wont be included as estimates in our variance caluclations these squares = constants 
   proj_indicator = rep(1,nrow(extrapolation_grid))
-  proj_ndx = RANN::nn2(query = coordinates(spatial_df), data = cbind(extrapolation_grid$x, extrapolation_grid$y), k = 1)
+  proj_ndx = nn2(query = coordinates(spatial_df), data = cbind(extrapolation_grid$x, extrapolation_grid$y), k = 1)
   proj_indicator[proj_ndx$nn.idx] = 0
   
   ## create TMB data object
@@ -73,15 +75,15 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
                simulate_state = 0
   )
   ## create TMB param object
+  range_domain = diff(range(coordinates(spatial_df)))
   params_tmb = list()
   if(is.null(start_par_list)) {
     params_tmb$omega = rep(0, spde$n.spde)
     params_tmb$betas = c(mean(data_tmb$y / data_tmb$area), rep(0, ncol(model_matrix) - 1))
     ## get range of domain, based on mesh
-    range_domain = diff(range(mesh$loc))
     params_tmb$ln_kappa = log(sqrt(8) / (range_domain * 0.25)) ## start by distance at which spatial autocorrelation (rho) = 0.1. based on 25% of domain
     ## variance terms half for phi, half for GMRF.
-    params_tmb$ln_tau = log(1 / (0.5 * sd(data_tmb$y / data_tmb$area)))
+    params_tmb$ln_tau = log(2) ## tay = precision inverse of marginal variance. starting value set to 0.1 of variation in 
     params_tmb$ln_phi = log(0.5 * sd(data_tmb$y / data_tmb$area))
     if(family == 1) {
       params_tmb$ln_tau = 0 ## phi -> 0 = Poission
@@ -193,26 +195,38 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
   if (is.character(try(chol(optimHess(temp_pars, fn = obj_gmrf$fn, gr = obj_gmrf$gr)), silent = TRUE)) | (max_grad_this > grad_tol)) {
     ## try a different kappa
     temp_pars["ln_kappa"] = log(sqrt(8) / (range_domain * 0.1)) ## 10% of domain range
-    temp_pars["ln_tau"] = params_tmb$ln_tau
+    temp_pars["ln_tau"] = log(10)
+    if(trace_level != "none")
+      print(paste0("Failed first optimisation, trying different starting values betas = ", paste0(temp_pars["betas"], collapse = ",")," for kappa = ", exp(temp_pars["ln_kappa"] ),", tau = ", exp(temp_pars["ln_tau"]) ," for GF"))
+    
     temp_opt = tryCatch(
       expr = nlminb(temp_pars, obj_gmrf$fn, obj_gmrf$gr, control = control),
       error = function(e) {e}
     )
-    temp_pars <<- temp_opt$par
+    if(trace_level != "none")
+      print(paste0("fixed effect MLE pars = ", paste0(temp_opt$par, collapse = ", ")))
+    
+    temp_pars <- temp_opt$par
     opt_gmrf$iterations = opt_gmrf$iterations + temp_opt$iterations
     if (is.character(try(chol(optimHess(temp_pars, fn = obj_gmrf$fn, gr = obj_gmrf$gr)), silent = TRUE))) {
       temp_pars["ln_kappa"] = log(sqrt(8) / (range_domain * 0.5)) ## 50% of domain range
-      temp_pars["ln_tau"] = params_tmb$ln_tau
+      temp_pars["ln_tau"] = log(5)
+      if(trace_level != "none")
+        print(paste0("Failed first optimisation, trying different starting values betas = ", paste0(temp_pars["betas"], collapse = ",")," for kappa = ", exp(temp_pars["ln_kappa"] ),", tau = ", exp(temp_pars["ln_tau"]) ," for GF"))
+      
       temp_opt = tryCatch(
         expr = nlminb(temp_pars, obj_gmrf$fn, obj_gmrf$gr, control = control),
         error = function(e) {e}
       )
-      temp_pars <<- temp_opt$par
+      temp_pars <- temp_opt$par
+      if(trace_level != "none")
+        print(paste0("fixed effect MLE pars = ", paste0(temp_opt$par, collapse = ", ")))
+      
       opt_gmrf$iterations = opt_gmrf$iterations + temp_opt$iterations
     }
   }
   if(trace_level != "none")
-    print(paste0("Finished GMRF optimisation"))
+    print(paste0("Finished GMRF optimisation fixed effect pars = ", paste0(temp_pars, collapse = ", ")))
   
   ## final convergence parameters
   max_grad_this = max(abs(obj_gmrf$gr(temp_pars)));

@@ -11,14 +11,12 @@
 #' @param boxlet_per_sample_height is building 'boxlet_indicator_matrix' how many boxlets are in a sampling unit for y-axis, ignored if boxlet_indicator_matrix supplied
 #' @param trace print messages as function progresses
 #' @export
-#' @import rgeos
-#' @import sp
 #' @return returns a list containing a fine lattice which represents all the boxlets.
 BoxletEstimatorSamplingFrame = function(survey_polygon, quad_width, quad_height, quad_x_spacing, quad_y_spacing, boxlet_per_sample_width = 2, boxlet_per_sample_height = 2, trace = F) {
   if(trace)
     cat("Entering: BoxletEstimatorSamplingFrame()\n")
   if(class(survey_polygon) != "SpatialPolygons")
-    error("survey_polygon needs to be of class SpatialPolygons, please check this.")
+    stop("survey_polygon needs to be of class SpatialPolygons, please check this.")
   survey_xlim = survey_polygon@bbox[1,]
   survey_ylim = survey_polygon@bbox[2,]
   #survey_area =  rgeos::gArea(survey_polygon)

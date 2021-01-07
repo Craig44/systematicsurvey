@@ -16,7 +16,7 @@ rmvnorm_prec(mu, prec, n.sims, random_seed)
 \item{random_seed}{integer seed}
 }
 \value{
-simulated parameters.
+matrix of simulated parameter values with dimensions [n.sims x length(mu)]
 }
 \description{
 rmvnorm_prec
