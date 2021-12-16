@@ -4,8 +4,13 @@
 \alias{PoststratifiedOverlappingEstimator}
 \title{PoststratifiedOverlappingEstimator}
 \usage{
-PoststratifiedOverlappingEstimator(y, sample_area, survey_area,
-  nx_strat = 1, ny_strat = 1)
+PoststratifiedOverlappingEstimator(
+  y,
+  sample_area,
+  survey_area,
+  nx_strat = 1,
+  ny_strat = 1
+)
 }
 \arguments{
 \item{y}{matrix of data which represents data from an areal view of the survey, use NA's for no data/out of bounds}

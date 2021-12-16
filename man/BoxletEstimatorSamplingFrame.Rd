@@ -4,9 +4,16 @@
 \alias{BoxletEstimatorSamplingFrame}
 \title{BoxletEstimatorSamplingFrame}
 \usage{
-BoxletEstimatorSamplingFrame(survey_polygon, quad_width, quad_height,
-  quad_x_spacing, quad_y_spacing, boxlet_per_sample_width = 2,
-  boxlet_per_sample_height = 2, trace = F)
+BoxletEstimatorSamplingFrame(
+  survey_polygon,
+  quad_width,
+  quad_height,
+  quad_x_spacing,
+  quad_y_spacing,
+  boxlet_per_sample_width = 2,
+  boxlet_per_sample_height = 2,
+  trace = F
+)
 }
 \arguments{
 \item{survey_polygon}{a spatial polygon that is the same coordinate reference as data.}

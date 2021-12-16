@@ -24,4 +24,4 @@ Suggests:
     ggplot2
 LinkingTo: 
     TMB
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

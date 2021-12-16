@@ -4,9 +4,17 @@
 \alias{BoxletEstimator}
 \title{BoxletEstimator}
 \usage{
-BoxletEstimator(spatial_df, survey_polygon, quad_width, quad_height,
-  quad_x_spacing, quad_y_spacing, boxlet_sampling_frame = NULL,
-  boxlet_frame_settings = NULL, trace = F)
+BoxletEstimator(
+  spatial_df,
+  survey_polygon,
+  quad_width,
+  quad_height,
+  quad_x_spacing,
+  quad_y_spacing,
+  boxlet_sampling_frame = NULL,
+  boxlet_frame_settings = NULL,
+  trace = F
+)
 }
 \arguments{
 \item{spatial_df}{spatial data frame, with coordinates for midpoints. Attributes of spatial_df, should have coordinates with coordinate reference, along with width and height of each sampling unit.}

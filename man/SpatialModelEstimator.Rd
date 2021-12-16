@@ -4,10 +4,19 @@
 \alias{SpatialModelEstimator}
 \title{SpatialModelEstimator}
 \usage{
-SpatialModelEstimator(spatial_df, formula, mesh, extrapolation_grid,
-  family, link, bias_correct = F, control = list(eval.max = 10000,
-  iter.max = 10000), convergence = list(grad_tol = 0.001),
-  start_par_list = NULL, trace_level = "none")
+SpatialModelEstimator(
+  spatial_df,
+  formula,
+  mesh,
+  extrapolation_grid,
+  family,
+  link,
+  bias_correct = F,
+  control = list(eval.max = 10000, iter.max = 10000),
+  convergence = list(grad_tol = 0.001),
+  start_par_list = NULL,
+  trace_level = "none"
+)
 }
 \arguments{
 \item{spatial_df}{data.frame}
