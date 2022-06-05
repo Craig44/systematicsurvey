@@ -3,7 +3,6 @@
 export(BoxletEstimator)
 export(BoxletEstimatorSamplingFrame)
 export(CorrelationAdjusted)
-export(PoststratifiedNonOverlappingEstimator)
 export(PoststratifiedOverlappingEstimator)
 export(SpatialModelEstimator)
 importFrom(INLA,inla.mesh.projector)
