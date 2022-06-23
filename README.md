@@ -2,7 +2,7 @@
 Craig Marsh
 ## Overview
 ## Installation
-`install_github("Craig44/spatialsurvey")`
+`install_github("Craig44/systematicsurvey")`
 
 ## Examples additional resources
 

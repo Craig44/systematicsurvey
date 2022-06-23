@@ -10,8 +10,8 @@
 #' @return Post-stratified variance estimator for population total based on non-overlapping stratum
 #' 
 PoststratifiedNonOverlappingEstimator = function(y, sample_area, survey_area, nx_strat = 2, ny_strat = 2) {
-  if(class(y) != "matrix")
-    stop(paste0("expect y, to be a matrix"))
+  if(!any(class(y) == "matrix"))
+    stop(paste0("expect y to be a matrix"))
   if(length(survey_area) != 1)
     stop(paste0("expect survey_area to be a scalar, total area of survey"))
   area_mat = NULL;
