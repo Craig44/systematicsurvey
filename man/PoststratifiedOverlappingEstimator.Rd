@@ -2,22 +2,12 @@
 % Please edit documentation in R/PoststratifiedOverlappingEstimator.R
 \name{PoststratifiedOverlappingEstimator}
 \alias{PoststratifiedOverlappingEstimator}
-\title{PoststratifiedOverlappingEstimator}
+\title{PoststratifiedOverlappingEstimatorAlt}
 \usage{
-PoststratifiedOverlappingEstimator(
-  y,
-  sample_area,
-  survey_area,
-  nx_strat = 1,
-  ny_strat = 1
-)
+PoststratifiedOverlappingEstimator(y, nx_strat = 1, ny_strat = 1)
 }
 \arguments{
 \item{y}{matrix of data which represents data from an areal view of the survey, use NA's for no data/out of bounds}
-
-\item{sample_area}{area of each sampling unit, either a single value of all the same, otherwise a matrix of equal dimensions}
-
-\item{survey_area}{scalar for survey area}
 
 \item{nx_strat}{number of sampling units to the right (x-axis) in each strata}
 
@@ -27,7 +17,7 @@ PoststratifiedOverlappingEstimator(
 Post-stratified variance estimator for the poopulation total based on overlapping strata
 }
 \description{
-PoststratifiedOverlappingEstimator
+PoststratifiedOverlappingEstimatorAlt
 }
 \details{
 a functon that replicates the variacnce estimator from Millar & Olsen 1995
