@@ -59,7 +59,7 @@ jobs:
         with:
           name: systematicsurvey.tar.gz
           path: systematicsurvey_0.1.0.tar.gz
-jobs:
+
   bookdown:
     name: Render-Book
     runs-on: macOS-latest
