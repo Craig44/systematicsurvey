@@ -48,3 +48,14 @@ jobs:
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
+
+      - name: Build systematicsurvey
+        env:
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # https://github.com/settings/tokens
+        run: Rscript -e 'devtools::build(path = getwd())'
+
+      - name: artifact systematicsurvey
+        uses: actions/upload-artifact@v1
+        with:
+          name: systematicsurvey.tar.gz
+          path: systematicsurvey_0.1.0.tar.gz

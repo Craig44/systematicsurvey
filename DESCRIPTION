@@ -1,6 +1,6 @@
 Package: systematicsurvey
 Title: Gives access to a range of Design and Model-based estimators for two dimensional systematic surveys, particulraly systemtic spatial surveys
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Craig",
            family = "Marsh",
