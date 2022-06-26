@@ -13,7 +13,6 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     TMB (>= 1.7.16),
-    INLA,
     sp,
     RANN,
     mgcv,
@@ -22,7 +21,8 @@ Imports:
     Rdpack,
     Matrix (>= 1.2.17)
 Suggests:
-    ggplot2
+    ggplot2,
+    INLA
 LinkingTo: 
     TMB
 RoxygenNote: 7.1.1
