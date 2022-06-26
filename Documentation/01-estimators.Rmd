@@ -40,7 +40,7 @@ Defined in @wolter1984investigation and investigated for spatial systematic samp
 %,
 Here, \({\rho}\) is often substituted for by an estimate of global spatial-autocorrelation such as the commonly used Morans I \citep{anselin1995local}. 
 
-##Boxlet estimator (hybrid)
+## Boxlet estimator (hybrid)
 The boxlet method proposed by @fewster2011variance} fits a density surface to the spatial domain $\mathcal{D}$ using a two-dimensional generalised additive model (GAM) [@wood2017generalized]. For any possible location, $b$, of the first quadrat, this enables calculation of the expected total count within the sampled quadrats, $\eta_b$ and within $\mathcal{D}$, $\eta_\mathcal{D}$. This calculation is done using finite approximation over a fine lattice within $\mathcal{D}$ (these lattice points correspond to the centroids of the so-called boxlets).  Let $p_b=\eta_b/\eta_\mathcal{D}$ denote the proportion of the expected total count that is expected within the sampled quadrats.
 
 Let $y^+=\sum_{i=1}^n y_i$ be the number of individuals counted in the systematic sample. The boxlet method partitions the variance of $y^+$ using the law of total variance (Equation~\ref{eq:tot_var}).
@@ -63,7 +63,7 @@ The boxlet method estimates (\ref{eq:BoxletVar}) by substituting $N$ with  $\wid
 \end{equation}
 
 
-##Geostatistical model-based estimator (model-based)
+## Geostatistical model-based estimator (model-based)
 
 The geostatistical model-based approach partitions the spatial domain $\mathcal{D}$ into $m >> n$ quadrats, with abundances (at the time of the survey) of \( \boldsymbol{y}=\{y_i, i= 1, \dots, m\}\), and hence $N=\sum_i^m y_i$. The abundances are assumed to be a realisation from a model,
 \begin{equation*}
@@ -74,20 +74,21 @@ with auxiliary covariates denoted by \(\boldsymbol{X}\) and model parameters den
 
 
 Let $\Omega$ be the index of the set of $n$ sampling units selected by the systematic survey. The estimate of total population can be decomposed as
-\begin{equation}\label{eq:total_estimator}
+\begin{equation}
 \widehat{N} = \sum\limits_{i \in \Omega} y_i + \sum\limits_{j \notin \Omega} E[y_j| y_i, i \in \Omega] \ .
-
+(\#eq:total_estimator)
+\end{equation}
 The $y_i, i \in \Omega$ are known and so inference on un-sampled units $y_j, j \notin \Omega$ is the goal. 
 
 
-Geostatistical models have been used with systematic surveys primarily in the acoustic literature \citep{walline_07,simmonds1996better} but also in land cover use \citep{aune2014comparison}. These studies used kriging equations for model inference, which differs from the SPDE approach \citep{lindgren2011explicit} that is used for geostatistical models presented here (see \cite[Chatper~7]{gomez2020bayesian} and \cite{chang2015spatial} for more detail on the difference between these two approaches). The SPDE approach was chosen for its flexibility in response variable distributions, flexibility in incorporating spatio-temporal GFs, ease of including covariates and availability of convenient software for its implementation, i.e. INLA \citep{rinla_ref}.
+Geostatistical models have been used with systematic surveys primarily in the acoustic literature @walline_07; @simmonds1996better but also in land cover use @aune2014comparison. These studies used kriging equations for model inference, which differs from the SPDE approach @lindgren2011explicit that is used for geostatistical models presented here (see Chatper 7 @gomez2020bayesian and @chang2015spatial for more detail on the difference between these two approaches). The SPDE approach was chosen for its flexibility in response variable distributions, flexibility in incorporating spatio-temporal GFs, ease of including covariates and availability of convenient software for its implementation, i.e. INLA @rinla_ref.
 
 
-The software chosen to implement the spatial model (Equations~\ref{eq:obs_level} and~\ref{eq:GF}), and estimator for the total population (Equation~\ref{eq:total_estimator}) and corresponding variance was Template Model Builder (TMB) \citep{tmb}. TMB was chosen for its ease of implementing bespoke models (Equation~\ref{eq:total_estimator} only involves using a subset of fitted values) and computational speed \citep{muff2020accounting} required for the purpose of performing 1\ 000's of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion (Section~\ref{sec:cpue_inference}), which is commonly known as the generalised delta-method \citep{millar2011maximum,fournier2012ad}). TMB also includes the \enquote{epsilon} method of bias correction \citep{tierney1989fully,thorson2016implementing}, which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. \cite{thorson2016implementing} showed the \enquote{epsilon} method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of \({SE}\left[\widehat{N}\right]\). 
+The software chosen to implement the spatial model, and estimator for the total population (Equation~\@ref(eq:total_estimator)) and corresponding variance was Template Model Builder (TMB) [@tmb]. TMB was chosen for its ease of implementing bespoke models (Equation~\@ref(eq:total_estimator) only involves using a subset of fitted values) and computational speed \citep{muff2020accounting} required for the purpose of performing 1\ 000's of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion, which is commonly known as the generalised delta-method @millar2011maximum;@fournier2012ad). TMB also includes the "epsilon" method of bias correction [@tierney1989fully;@thorson2016implementing], which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. @thorson2016implementing showed the "epsilon" method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of \({SE}\left[\widehat{N}\right]\). 
 
 
 
-For spatially variable populations it is often better to estimate and provide standard errors for \( \log \widehat{N}\), which has generally been found to be more quadratic \citep{bolker2013strategies}. When \( \log \widehat{N}\) is of focus, confidence intervals are
+For spatially variable populations it is often better to estimate and provide standard errors for \( \log \widehat{N}\), which has generally been found to be more quadratic @bolker2013strategies. When \( \log \widehat{N}\) is of focus, confidence intervals are
 
 \begin{equation}
 	CI_{95\%} =	exp \left(\log \widehat{N} \pm 1.96 \ \widehat{SE}\left[\log \widehat{N}\right]\right) \ .

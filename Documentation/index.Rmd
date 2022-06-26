@@ -6,12 +6,14 @@ site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
 url: craig44.github.io/systematicsurvey/
-# cover-image: path to the social sharing image like images/cover.jpg
 description: |
-  This bookdown describes some estimators for two-dimensional systematic surveys and how to use them with the systematicsurvey R package.
+  This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package.
 link-citations: yes
 github-repo: https://github.com/Craig44/systematicsurvey
 ---
+# Introduction
+This Gitbook serves two purposes, firstly to demonstrate how to use the R package \texttt{
+systematicsurvey} the second is the give some theory and equations for the functions in the package.
 
 # Two dimensional systematic surveys
 Two-dimensional systematic surveys are a commonly applied survey design for estimating the abundance of spatial populations [@millar1995abundance; @fewster2011variance]. Systematic surveys enforce a uniform sampling pattern over the entire spatial domain. Unlike random sampling, systematic surveys avoid over and under sampling space.
