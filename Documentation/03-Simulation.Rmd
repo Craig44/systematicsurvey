@@ -1,3 +1,14 @@
 # Simulations with systematicsurvey
 
+```{r, include  = TRUE}
+library(systematicsurvey)
+# can install it using 
+## devtools::install_github("Craig44/systematicsurvey")
+```
+
+
+Simulate a population
+
+
+
 

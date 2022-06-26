@@ -43,21 +43,22 @@ Here, \({\rho}\) is often substituted for by an estimate of global spatial-autoc
 ## Boxlet estimator (hybrid)
 The boxlet method proposed by @fewster2011variance} fits a density surface to the spatial domain $\mathcal{D}$ using a two-dimensional generalised additive model (GAM) [@wood2017generalized]. For any possible location, $b$, of the first quadrat, this enables calculation of the expected total count within the sampled quadrats, $\eta_b$ and within $\mathcal{D}$, $\eta_\mathcal{D}$. This calculation is done using finite approximation over a fine lattice within $\mathcal{D}$ (these lattice points correspond to the centroids of the so-called boxlets).  Let $p_b=\eta_b/\eta_\mathcal{D}$ denote the proportion of the expected total count that is expected within the sampled quadrats.
 
-Let $y^+=\sum_{i=1}^n y_i$ be the number of individuals counted in the systematic sample. The boxlet method partitions the variance of $y^+$ using the law of total variance (Equation~\ref{eq:tot_var}).
+Let $y^+=\sum_{i=1}^n y_i$ be the number of individuals counted in the systematic sample. The boxlet method partitions the variance of $y^+$ using the law of total variance (Equation \@ref(eq:totvar)).
 The first term (${\rm var}_b(E[y^+|b])$) is the variance in the expected value of $y^+$ due to the possible starting position, $b$, of the first quadrat. The second component (\(E_b[{\rm var}(y^+|b)]\)) quantifies the expected (over $b$) magnitude of the variability in $y^+$ for a given $b$,
 
-\begin{equation}\label{eq:tot_var}
-{\rm var}(y^+) = {\rm var}_{b}(E[y^+|b]) + E_{b}[{\rm var}(y^+|b)] \ .
+\begin{equation}
+{\rm var}(y^+) = {\rm var}_{b}(E[y^+|b]) + E_{b}[{\rm var}(y^+|b)]  
+(\#eq:totvar)
 \end{equation}
 
 Under the assumption that the counts in each quadrat are Poisson distributed, then given $b$ it follows that $y^+$ is binomially distributed according to a ${\rm Bin}(N,p_b)$ distribution. This gives
 \begin{align}
 {\rm var}(y^+) &=  {\rm var}_{b}(N p_b) + E_{b}[Np_b(1 - p_b)] \nonumber \\
 &=  E_{b}[N^2 p_b^2] + E_{b}[N p_b]^2 
-+ E_{b}[Np_b(1 - p_b)] \label{eq:BoxletVar} \ .
++ E_{b}[Np_b(1 - p_b)] \label{eq:BoxletVar} 
 \end{align}
 
-The boxlet method estimates (\ref{eq:BoxletVar}) by substituting $N$ with  $\widehat{N}$, and numerically evaluating the $E_b$ and ${\rm var}_b$ terms (that is, with respect to variability in $p_b$) over all boxlet centroids within the scope of placement of the first quadrat. This leads to the boxlet variance estimator $y^+$ and hence for $\bar{y}$, 
+The boxlet method estimates \({\rm var}(y^+)\) by substituting $N$ with  $\widehat{N}$, and numerically evaluating the $E_b$ and ${\rm var}_b$ terms (that is, with respect to variability in $p_b$) over all boxlet centroids within the scope of placement of the first quadrat. This leads to the boxlet variance estimator $y^+$ and hence for $\bar{y}$, 
 \begin{equation}
 \widehat{\rm var}_{box}(\bar{y}) =  \frac{\widehat{\rm var}_{box}(y^+)}{n^2}
 \end{equation}
@@ -75,8 +76,7 @@ with auxiliary covariates denoted by \(\boldsymbol{X}\) and model parameters den
 
 Let $\Omega$ be the index of the set of $n$ sampling units selected by the systematic survey. The estimate of total population can be decomposed as
 \begin{equation}
-\widehat{N} = \sum\limits_{i \in \Omega} y_i + \sum\limits_{j \notin \Omega} E[y_j| y_i, i \in \Omega] \ .
-(\#eq:total_estimator)
+\widehat{N} = \sum\limits_{i \in \Omega} y_i + \sum\limits_{j \notin \Omega} E[y_j| y_i, i \in \Omega] \ .(\#eq:totalestimator)
 \end{equation}
 The $y_i, i \in \Omega$ are known and so inference on un-sampled units $y_j, j \notin \Omega$ is the goal. 
 
@@ -84,7 +84,7 @@ The $y_i, i \in \Omega$ are known and so inference on un-sampled units $y_j, j \
 Geostatistical models have been used with systematic surveys primarily in the acoustic literature @walline_07; @simmonds1996better but also in land cover use @aune2014comparison. These studies used kriging equations for model inference, which differs from the SPDE approach @lindgren2011explicit that is used for geostatistical models presented here (see Chatper 7 @gomez2020bayesian and @chang2015spatial for more detail on the difference between these two approaches). The SPDE approach was chosen for its flexibility in response variable distributions, flexibility in incorporating spatio-temporal GFs, ease of including covariates and availability of convenient software for its implementation, i.e. INLA @rinla_ref.
 
 
-The software chosen to implement the spatial model, and estimator for the total population (Equation~\@ref(eq:total_estimator)) and corresponding variance was Template Model Builder (TMB) [@tmb]. TMB was chosen for its ease of implementing bespoke models (Equation~\@ref(eq:total_estimator) only involves using a subset of fitted values) and computational speed \citep{muff2020accounting} required for the purpose of performing 1\ 000's of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion, which is commonly known as the generalised delta-method @millar2011maximum;@fournier2012ad). TMB also includes the "epsilon" method of bias correction [@tierney1989fully;@thorson2016implementing], which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. @thorson2016implementing showed the "epsilon" method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of \({SE}\left[\widehat{N}\right]\). 
+The software chosen to implement the spatial model, and estimator for the total population (Equation~\@ref(eq:totalestimator)) and corresponding variance was Template Model Builder (TMB) [@tmb]. TMB was chosen for its ease of implementing bespoke models (Equation~\@ref(eq:totalestimator) only involves using a subset of fitted values) and computational speed [@muff2020accounting] required for the purpose of performing 1\ 000's of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion, which is commonly known as the generalised delta-method @millar2011maximum;@fournier2012ad). TMB also includes the "epsilon" method of bias correction [@tierney1989fully;@thorson2016implementing], which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. @thorson2016implementing showed the "epsilon" method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of \({SE}\left[\widehat{N}\right]\). 
 
 
 
