@@ -9,6 +9,7 @@ jobs:
   bookdown:
     name: Render-Book
     runs-on: macOS-latest
+    needs: build
     steps:
       - uses: actions/checkout@v1
       - uses: r-lib/actions/setup-r@v1

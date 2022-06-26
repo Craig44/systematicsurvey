@@ -43,7 +43,7 @@ jobs:
       - name: Install R-INLA
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # https://github.com/settings/tokens
-        run: Rscript -e 'devtools::install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)'
+        run: Rscript -e 'install.packages("INLA",repos=c(getOption("repos"),INLA="https://inla.r-inla-download.org/R/stable"), dep=TRUE)'
 
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
