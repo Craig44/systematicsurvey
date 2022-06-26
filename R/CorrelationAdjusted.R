@@ -1,10 +1,12 @@
 #' CorrelationAdjusted 
-#' @details calculate the correlation adjusted variance estimator for the mean from \insertRef{d2003estimating;textual}{systematicsurvey}. This adjusts the simple random sampling estimator using an adjustment based on the spatial autocorrelation, based on Morans I 
+#' @details calculate the correlation adjusted variance estimator for the mean from \insertCite{d2003estimating}{systematicsurvey}. This adjusts the simple random sampling estimator using an adjustment based on the spatial autocorrelation, based on Morans I 
 #' @param y sample data (assumed to be densities) of class "RasterLayer" see an example for how this is created.
 #' @export
 #' @importFrom raster Moran
 #' @importFrom Rdpack reprompt
 #' @return Spatial autocorrealtion variance estimator for the poopulation total
+#' @references
+#' \insertAllCited{}
 #' 
 CorrelationAdjusted = function(y, survey_area) {
   if (class(y) != "RasterLayer")

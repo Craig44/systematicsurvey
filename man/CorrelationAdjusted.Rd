@@ -16,5 +16,8 @@ Spatial autocorrealtion variance estimator for the poopulation total
 CorrelationAdjusted
 }
 \details{
-calculate the correlation adjusted variance estimator for the mean. This adjusts the simple random sampling estimator using an adjustment based on the spatial autocorrelation, based on Morans I
+calculate the correlation adjusted variance estimator for the mean from \insertCite{d2003estimating}{systematicsurvey}. This adjusts the simple random sampling estimator using an adjustment based on the spatial autocorrelation, based on Morans I
+}
+\references{
+\insertAllCited{}
 }

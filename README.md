@@ -9,6 +9,8 @@ for two-dimensional systematic surveys with only a single primary sampling unit 
 ```
 devtools::install_github("Craig44/systematicsurvey")
 ```
+## Documentation 
+[A Gitbook found here](craig44.github.io/systematicsurvey/) is the best resource for outlining functionality and how to use the R package.
 
 ## Contact 
 <a href="mailto:craig.marsh10@gmail.com?"><img src="https://img.shields.io/badge/gmail-%23DD0031.svg?&style=for-the-badge&logo=gmail&logoColor=white"/></a>
