@@ -111,7 +111,7 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
     print(paste0("set up data and parameters"))
   
   obj_init = tryCatch (
-    expr <- TMB::MakeADFun(data = data_tmb, parameters = params_tmb, map = fixed_pars_no_gmrf, DLL = "spatialsurvey_TMBExports", silent = T),
+    expr <- TMB::MakeADFun(data = data_tmb, parameters = params_tmb, map = fixed_pars_no_gmrf, DLL = "systematicsurvey_TMBExports", silent = T),
     error = function(e) {e}
   )
   
@@ -158,12 +158,12 @@ SpatialModelEstimator = function(spatial_df, formula, mesh, extrapolation_grid, 
   obj_gmrf = NULL
   if(family %in% c(1, 2, 3)) {
     obj_gmrf = tryCatch(
-      expr <- TMB::MakeADFun(data = data_tmb, random = c("omega"), parameters = params_tmb , DLL = "spatialsurvey_TMBExports", silent = T),
+      expr <- TMB::MakeADFun(data = data_tmb, random = c("omega"), parameters = params_tmb , DLL = "systematicsurvey_TMBExports", silent = T),
       error = function(e) {e}
     )
   } else {
     obj_gmrf = tryCatch(
-      expr <- TMB::MakeADFun(data = data_tmb, random = c("omega"), parameters = params_tmb, map = list(ln_phi = as.factor(NA)), DLL = "spatialsurvey_TMBExports", silent = T),
+      expr <- TMB::MakeADFun(data = data_tmb, random = c("omega"), parameters = params_tmb, map = list(ln_phi = as.factor(NA)), DLL = "systematicsurvey_TMBExports", silent = T),
       error = function(e) {e}
     )
   }
