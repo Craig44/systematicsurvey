@@ -1,4 +1,4 @@
-tmb_name <- "spatialsurvey_TMBExports"
+tmb_name <- "systematicsurvey_TMBExports"
 tmb_flags <- commandArgs(trailingOnly = TRUE)
 
 if(file.exists(paste0(tmb_name, ".cpp"))) {

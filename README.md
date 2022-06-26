@@ -1,17 +1,17 @@
 # spatialsurvey
-Craig Marsh
+An R package containing a range of estimators for the mean or total of a population. The aim is to provide
+easy to use tools for two-dimensional systematic surveys that do not have design-based estimators. This is the case
+for two-dimensional systematic surveys with only a single primary sampling unit (PSU).
 ## Overview
 ## Installation
-`install_github("Craig44/systematicsurvey")`
+`systematicsurvey` is not on CRAN. However, you can install it in an R environment using. 
 
-## Examples additional resources
+```
+devtools::install_github("Craig44/systematicsurvey")
+```
 
-## License
-
-### TODO
-
-- [ ] Fix devtools::document() is not including useDynLib(spatialsurvey, .registration=TRUE); useDynLib(spatialsurvey_TMBExports) which relates to [this thread](https://github.com/mlysy/TMBtools/issues/4)
-
+## Contact 
+<a href="mailto:craig.marsh10@gmail.com?"><img src="https://img.shields.io/badge/gmail-%23DD0031.svg?&style=for-the-badge&logo=gmail&logoColor=white"/></a>
 
 
 
