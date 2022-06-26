@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Two dimensional systematic surveys | Two-dimensional systematic survey estimators</title>
+  <meta name="description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Two dimensional systematic surveys | Two-dimensional systematic survey estimators" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  <meta name="github-repo" content="https://github.com/Craig44/systematicsurvey" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Two dimensional systematic surveys | Two-dimensional systematic survey estimators" />
+  
+  <meta name="twitter:description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  
+
+<meta name="author" content="C.Marsh" />
+
+
+<meta name="date" content="2022-06-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="estimatrs.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="two-dimensional-systematic-surveys.html"><a href="two-dimensional-systematic-surveys.html"><i class="fa fa-check"></i><b>2</b> Two dimensional systematic surveys</a></li>
+<li class="chapter" data-level="3" data-path="estimatrs.html"><a href="estimatrs.html"><i class="fa fa-check"></i><b>3</b> Estimators</a><ul>
+<li class="chapter" data-level="3.1" data-path="estimatrs.html"><a href="estimatrs.html#simple-random-sample-design-based"><i class="fa fa-check"></i><b>3.1</b> Simple Random Sample (design-based)</a></li>
+<li class="chapter" data-level="3.2" data-path="estimatrs.html"><a href="estimatrs.html#post-stratification-design-based"><i class="fa fa-check"></i><b>3.2</b> Post-stratification (design-based)</a></li>
+<li class="chapter" data-level="3.3" data-path="estimatrs.html"><a href="estimatrs.html#correlation-adjustment-hybrid"><i class="fa fa-check"></i><b>3.3</b> Correlation adjustment (hybrid)</a></li>
+<li class="chapter" data-level="3.4" data-path="estimatrs.html"><a href="estimatrs.html#boxlet-estimator-hybrid"><i class="fa fa-check"></i><b>3.4</b> Boxlet estimator (hybrid)</a></li>
+<li class="chapter" data-level="3.5" data-path="estimatrs.html"><a href="estimatrs.html#geostatistical-model-based-estimator-model-based"><i class="fa fa-check"></i><b>3.5</b> Geostatistical model-based estimator (model-based)</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-based-estimators.html"><a href="model-based-estimators.html"><i class="fa fa-check"></i><b>4</b> Model-based estimators</a></li>
+<li class="chapter" data-level="5" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html"><i class="fa fa-check"></i><b>5</b> Simulations with systematicsurvey</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Two-dimensional systematic survey estimators</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="two-dimensional-systematic-surveys" class="section level1 hasAnchor">
+<h1><span class="header-section-number">Chapter 2</span> Two dimensional systematic surveys<a href="two-dimensional-systematic-surveys.html#two-dimensional-systematic-surveys" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Two-dimensional systematic surveys are a commonly applied survey design for estimating the abundance of spatial populations <span class="citation">(Millar and Olsen <a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>; Fewster <a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>)</span>. Systematic surveys enforce a uniform sampling pattern over the entire spatial domain. Unlike random sampling, systematic surveys avoid over and under sampling space.</p>
+<p>Systematic surveys can have the advantage over random sampling strategies of being more practical to implement, and in simulation studies, the estimated population density has been shown to provide considerably lower variance than random designs under many conditions e.g., <span class="citation">McGarvey, Burch, and Matthews (<a href="#ref-mcgarvey2016precision" role="doc-biblioref">2016</a>)</span>. However, the most common systematic survey design consists of just a single primary sampling unit (PSU) and consequently there is no applicable design-based estimator of this variance. This has led to the development and application of several approximations based on variations of design-based variance estimators designed for random sample designs <span class="citation">(Wolter <a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>; D’Orazio <a href="#ref-d2003estimating" role="doc-biblioref">2003</a>)</span>.</p>
+<div class="figure">
+<img src="Figures/alt_full_random_draw.jpeg" id="fig:sys_survey" style="width:50.0%" alt="" />
+<p class="caption">Example of systematic survey. Blue rectangles are sampling units</p>
+</div>
+<div class="figure">
+<img src="Figures/alt_first_random_draw.jpeg" id="fig:single_draw" style="width:50.0%" alt="" />
+<p class="caption">The only randomly selected sampling unit from</p>
+</div>
+<p>Consider a spatial survey region <span class="math inline">\(\mathcal{D} \subset \mathbb{R}^2\)</span> of area <span class="math inline">\(A\)</span>. For simplicity <span class="math inline">\(i\)</span> indexes a sampling unit (quadrat) that is spatially referenced by coordinates in <span class="math inline">\(\mathcal{D}\)</span>. A two-dimensional systematic survey that is based on a single PSU requires the specification of the location of the first sampling unit, from which the location of all other sampling units are deterministically specified. The response variable in this setting is either numbers (abundance) or weight (biomass) in each of the <span class="math inline">\(n\)</span> sampling units denoted by <span class="math inline">\(\boldsymbol{y} = (y_1,y_2,\dots, y_n)^T\)</span>.</p>
+<p>The population characteristic of focus is the total population within the survey region, denoted by <span class="math inline">\(N\)</span>, or equivalently the mean density over <span class="math inline">\(\mathcal{D}\)</span>, <span class="math inline">\(d_\mathcal{D}=N/A\)</span>.
+If <span class="math inline">\(\alpha\)</span> is the area of each sampling unit then <span class="math inline">\(y_\mathcal{D}=\alpha d_\mathcal{D}\)</span> is the expected mean value.
+Then, <span class="math inline">\(N=\kappa y_\mathcal{D}\)</span> where <span class="math inline">\(\kappa=A/\alpha\)</span> is the inverse of the sampling fraction.
+Design-based methods applied to systematic surveys all use the sample mean estimator of <span class="math inline">\(y_\mathcal{D}\)</span>, <span class="math inline">\(\bar{y}=\sum\limits_{i = 1}^{n} y_i/n\)</span>, and hence the estimator <span class="math inline">\(\widehat{N}=\kappa \bar{y}\)</span> of <span class="math inline">\(N\)</span>, with variance estimator</p>
+<p><span class="math display">\[
+\widehat{\rm var} \left(\widehat{N}\right) = \kappa^2 \widehat{\rm var}(\bar{y}) \ .
+\]</span></p>
+<p>In systematic surveys with multiple PSUs the systematic design-based variance estimator (<span class="math inline">\(\widehat{\rm var}_{sys}(\bar{y})\)</span>) is known  and follows,
+<span class="math display">\[\begin{equation*}\label{eq:exact_var}
+\widehat{\rm var}_{sys}(\bar{y}) = \frac{1}{B}\sum\limits_{b = 1}^{B} \left(\bar{y}_{b} - \bar{y}\right)^2 
+\end{equation*}\]</span>
+where, <span class="math inline">\(b=1,\dots,B\)</span> are the PSUs, each assumed to contain the same number of sampling units, and <span class="math inline">\(y_b\)</span> is the sample mean within PSU <span class="math inline">\(b\)</span>.
+However, <span class="math inline">\(B\)</span> is typically a relatively small number, so this estimated variance generally has few degrees of freedom.</p>
+<p>%,
+For the systematic design of interest in this study there is just a single PSU (the position of the first quadrat) and hence no design-based variance estimator exists. For this reason, as shown below, some authors have explored the use of the simple random sampling (SRS) variance estimator, ad-hoc estimators utilizing stratified random survey variance estimators <span class="citation">(Millar and Olsen <a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>; Strand <a href="#ref-strand2017study" role="doc-biblioref">2017</a>)</span> and adjusted SRS variance estimators <span class="citation">(Ambrosio Flores, Iglesias Martı́nez, and Marı́n Ferrer <a href="#ref-ambrosio2003systematic" role="doc-biblioref">2003</a>; Strand <a href="#ref-strand2017study" role="doc-biblioref">2017</a>; Brus and Saby <a href="#ref-brus2016approximating" role="doc-biblioref">2016</a>; McGarvey, Burch, and Matthews <a href="#ref-mcgarvey2016precision" role="doc-biblioref">2016</a>)</span>.</p>
+
+</div>
+<h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references">
+<div id="ref-ambrosio2003systematic">
+<p>Ambrosio Flores, Luis, Luis Iglesias Martı́nez, and Carmen Marı́n Ferrer. 2003. “Systematic Sample Design for the Estimation of Spatial Means.” <em>Environmetrics: The Official Journal of the International Environmetrics Society</em> 14 (1): 45–61.</p>
+</div>
+<div id="ref-brus2016approximating">
+<p>Brus, DJ, and NPA Saby. 2016. “Approximating the Variance of Estimated Means for Systematic Random Sampling, Illustrated with Data of the French Soil Monitoring Network.” <em>Geoderma</em> 279: 77–86.</p>
+</div>
+<div id="ref-d2003estimating">
+<p>D’Orazio, Marcello. 2003. “Estimating the Variance of the Sample Mean in Two-Dimensional Systematic Sampling.” <em>Journal of Agricultural, Biological, and Environmental Statistics</em> 8 (3): 280.</p>
+</div>
+<div id="ref-fewster2011variance">
+<p>Fewster, R M. 2011. “Variance Estimation for Systematic Designs in Spatial Surveys.” <em>Biometrics</em> 67 (4): 1518–31.</p>
+</div>
+<div id="ref-mcgarvey2016precision">
+<p>McGarvey, Richard, Paul Burch, and Janet M Matthews. 2016. “Precision of Systematic and Random Sampling in Clustered Populations: Habitat Patches and Aggregating Organisms.” <em>Ecological Applications</em> 26 (1): 233–48.</p>
+</div>
+<div id="ref-millar1995abundance">
+<p>Millar, Russell B, and Danette Olsen. 1995. “Abundance of Large Toheroa (<em>Paphies Ventricosa Gray</em>) at Oreti Beach, 1971–90, Estimated from Two-Dimensional Systematic Samples.” <em>New Zealand Journal of Marine and Freshwater Research</em> 29 (1): 93–99.</p>
+</div>
+<div id="ref-strand2017study">
+<p>Strand, Geir-Harald. 2017. “A Study of Variance Estimation Methods for Systematic Spatial Sampling.” <em>Spatial Statistics</em> 21: 226–40.</p>
+</div>
+<div id="ref-wolter1984investigation">
+<p>Wolter, Kirk M. 1984. “An Investigation of Some Estimators of Variance for Systematic Sampling.” <em>Journal of the American Statistical Association</em> 79 (388): 781–90.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estimatrs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/Craig44/BookDownExample/edit/main/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

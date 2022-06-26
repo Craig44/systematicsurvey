@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | Two-dimensional systematic survey estimators</title>
+  <meta name="description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="References | Two-dimensional systematic survey estimators" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  <meta name="github-repo" content="https://github.com/Craig44/systematicsurvey" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="References | Two-dimensional systematic survey estimators" />
+  
+  <meta name="twitter:description" content="This bookdown describes some estimators for two-dimensional systematic surveys and how to implement them with the systematicsurvey R package." />
+  
+
+<meta name="author" content="C.Marsh" />
+
+
+<meta name="date" content="2022-06-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="simulations-with-systematicsurvey.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="two-dimensional-systematic-surveys.html"><a href="two-dimensional-systematic-surveys.html"><i class="fa fa-check"></i><b>2</b> Two dimensional systematic surveys</a></li>
+<li class="chapter" data-level="3" data-path="estimatrs.html"><a href="estimatrs.html"><i class="fa fa-check"></i><b>3</b> Estimators</a><ul>
+<li class="chapter" data-level="3.1" data-path="estimatrs.html"><a href="estimatrs.html#simple-random-sample-design-based"><i class="fa fa-check"></i><b>3.1</b> Simple Random Sample (design-based)</a></li>
+<li class="chapter" data-level="3.2" data-path="estimatrs.html"><a href="estimatrs.html#post-stratification-design-based"><i class="fa fa-check"></i><b>3.2</b> Post-stratification (design-based)</a></li>
+<li class="chapter" data-level="3.3" data-path="estimatrs.html"><a href="estimatrs.html#correlation-adjustment-hybrid"><i class="fa fa-check"></i><b>3.3</b> Correlation adjustment (hybrid)</a></li>
+<li class="chapter" data-level="3.4" data-path="estimatrs.html"><a href="estimatrs.html#boxlet-estimator-hybrid"><i class="fa fa-check"></i><b>3.4</b> Boxlet estimator (hybrid)</a></li>
+<li class="chapter" data-level="3.5" data-path="estimatrs.html"><a href="estimatrs.html#geostatistical-model-based-estimator-model-based"><i class="fa fa-check"></i><b>3.5</b> Geostatistical model-based estimator (model-based)</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="model-based-estimators.html"><a href="model-based-estimators.html"><i class="fa fa-check"></i><b>4</b> Model-based estimators</a></li>
+<li class="chapter" data-level="5" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html"><i class="fa fa-check"></i><b>5</b> Simulations with systematicsurvey</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Two-dimensional systematic survey estimators</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered hasAnchor">
+<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+
+<div id="refs" class="references">
+<div>
+<p>Ambrosio Flores, Luis, Luis Iglesias Martı́nez, and Carmen Marı́n Ferrer. 2003. “Systematic Sample Design for the Estimation of Spatial Means.” <em>Environmetrics: The Official Journal of the International Environmetrics Society</em> 14 (1): 45–61.</p>
+</div>
+<div>
+<p>Aune-Lundberg, Linda, and Geir-Harald Strand. 2014. “Comparison of Variance Estimation Methods for Use with Two-Dimensional Systematic Sampling of Land Use/Land Cover Data.” <em>Environmental Modelling &amp; Software</em> 61: 87–97.</p>
+</div>
+<div>
+<p>Bolker, Benjamin M, Beth Gardner, Mark Maunder, Casper W Berg, Mollie Brooks, Liza Comita, Elizabeth Crone, et al. 2013. “Strategies for fitting nonlinear ecological models in R, AD Model Builder, and BUGS.” <em>Methods in Ecology and Evolution</em> 4 (6): 501–12.</p>
+</div>
+<div>
+<p>Brus, DJ, and NPA Saby. 2016. “Approximating the Variance of Estimated Means for Systematic Random Sampling, Illustrated with Data of the French Soil Monitoring Network.” <em>Geoderma</em> 279: 77–86.</p>
+</div>
+<div>
+<p>Chambers, Ray, and Robert Clark. 2012. <em>An Introduction to Model-Based Survey Sampling with Applications</em>. Vol. 37. Oxford University Press.</p>
+</div>
+<div>
+<p>Chang, K-L, S Guillas, and VE Fioletov. 2015. “Spatial Mapping of Ground-Based Observations of Total Ozone.” <em>Atmospheric Measurement Techniques</em> 8 (10): 4487–4505.</p>
+</div>
+<div>
+<p>D’Orazio, Marcello. 2003. “Estimating the Variance of the Sample Mean in Two-Dimensional Systematic Sampling.” <em>Journal of Agricultural, Biological, and Environmental Statistics</em> 8 (3): 280.</p>
+</div>
+<div>
+<p>Dunn, R, and A R Harrison. 1993. “Two-Dimensional Systematic Sampling of Land Use.” <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 42 (4): 585–601.</p>
+</div>
+<div>
+<p>Fewster, Rachel M, Stephen T Buckland, Kenneth P Burnham, David L Borchers, Peter E Jupp, Jeffrey L Laake, and Len Thomas. 2009. “Estimating the Encounter Rate Variance in Distance Sampling.” <em>Biometrics</em> 65 (1): 225–36.</p>
+</div>
+<div>
+<p>Fewster, R M. 2011. “Variance Estimation for Systematic Designs in Spatial Surveys.” <em>Biometrics</em> 67 (4): 1518–31.</p>
+</div>
+<div>
+<p>Fournier, David A, Hans J Skaug, Johnoel Ancheta, James Ianelli, Arni Magnusson, Mark N Maunder, Anders Nielsen, and John Sibert. 2012. “AD Model Builder: Using Automatic Differentiation for Statistical Inference of Highly Parameterized Complex Nonlinear Models.” <em>Optimization Methods and Software</em> 27 (2): 233–49.</p>
+</div>
+<div>
+<p>Gómez-Rubio, Virgilio. 2020. <em>Bayesian Inference with Inla</em>. CRC Press.</p>
+</div>
+<div>
+<p>Johnson, Devin S, Jeffrey L Laake, and Jay M Ver Hoef. 2010. “A Model-Based Approach for Making Ecological Inference from Distance Sampling Data.” <em>Biometrics</em> 66 (1): 310–18.</p>
+</div>
+<div>
+<p>Kristensen, Kasper, Anders Nielsen, Casper W. Berg, Hans Skaug, and Bradley M. Bell. 2016. “TMB: Automatic Differentiation and Laplace Approximation.” <em>Journal of Statistical Software</em> 70 (5): 1–21. <a href="https://doi.org/10.18637/jss.v070.i05">https://doi.org/10.18637/jss.v070.i05</a>.</p>
+</div>
+<div>
+<p>Lindgren, Finn, and Håvard Rue. 2015. “Bayesian Spatial Modelling with R-INLA.” <em>Journal of Statistical Software</em> 63 (19): 1–25. <a href="http://www.jstatsoft.org/v63/i19/">http://www.jstatsoft.org/v63/i19/</a>.</p>
+</div>
+<div>
+<p>Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. “An Explicit Link Between Gaussian Fields and Gaussian Markov Random Fields: The Stochastic Partial Differential Equation Approach.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 73 (4): 423–98.</p>
+</div>
+<div>
+<p>McGarvey, Richard, Paul Burch, and Janet M Matthews. 2016. “Precision of Systematic and Random Sampling in Clustered Populations: Habitat Patches and Aggregating Organisms.” <em>Ecological Applications</em> 26 (1): 233–48.</p>
+</div>
+<div>
+<p>Millar, Russell B. 2011. <em>Maximum likelihood estimation and inference: with examples in R, SAS and ADMB</em>. Vol. 111. John Wiley &amp; Sons.</p>
+</div>
+<div>
+<p>Millar, Russell B, and Danette Olsen. 1995. “Abundance of Large Toheroa (<em>Paphies Ventricosa Gray</em>) at Oreti Beach, 1971–90, Estimated from Two-Dimensional Systematic Samples.” <em>New Zealand Journal of Marine and Freshwater Research</em> 29 (1): 93–99.</p>
+</div>
+<div>
+<p>Shelton, Andrew Olaf, James T Thorson, Eric J Ward, and Blake E Feist. 2014. “Spatial Semiparametric Models Improve Estimates of Species Abundance and Distribution.” <em>Canadian Journal of Fisheries and Aquatic Sciences</em> 71 (11): 1655–66.</p>
+</div>
+<div>
+<p>Simmonds, E John, and Robert J Fryer. 1996. “Which Are Better, Random or Systematic Acoustic Surveys? A Simulation Using North Sea Herring as an Example.” <em>ICES Journal of Marine Science</em> 53 (1): 39–50.</p>
+</div>
+<div>
+<p>Ståhl, Göran, Svetlana Saarela, Sebastian Schnell, Sören Holm, Johannes Breidenbach, Sean P Healey, Paul L Patterson, et al. 2016. “Use of Models in Large-Area Forest Surveys: Comparing Model-Assisted, Model-Based and Hybrid Estimation.” <em>Forest Ecosystems</em> 3 (1): 1–11.</p>
+</div>
+<div>
+<p>Strand, Geir-Harald. 2017. “A Study of Variance Estimation Methods for Systematic Spatial Sampling.” <em>Spatial Statistics</em> 21: 226–40.</p>
+</div>
+<div>
+<p>Thorson, James T, and Kasper Kristensen. 2016. “Implementing a Generic Method for Bias Correction in Statistical Models Using Random Effects, with Spatial and Population Dynamics Examples.” <em>Fisheries Research</em> 175: 66–74.</p>
+</div>
+<div>
+<p>Tierney, Luke, Robert E Kass, and Joseph B Kadane. 1989. “Fully Exponential Laplace Approximations to Expectations and Variances of Nonpositive Functions.” <em>Journal of the American Statistical Association</em> 84 (407): 710–16.</p>
+</div>
+<div>
+<p>Walline, Paul D. 2007. “Geostatistical simulations of eastern Bering Sea walleye pollock spatial distributions, to estimate sampling precision.” <em>ICES Journal of Marine Science</em> 64 (3): 559–69. <a href="https://doi.org/10.1093/icesjms/fsl045">https://doi.org/10.1093/icesjms/fsl045</a>.</p>
+</div>
+<div>
+<p>Wolter, Kirk M. 1984. “An Investigation of Some Estimators of Variance for Systematic Sampling.” <em>Journal of the American Statistical Association</em> 79 (388): 781–90.</p>
+</div>
+<div>
+<p>Wood, Simon N. 2017. <em>Generalized Additive Models: An Introduction with R</em>. CRC press. <a href="https://doi.org/10.1201/9781315370279">https://doi.org/10.1201/9781315370279</a>.</p>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="simulations-with-systematicsurvey.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/Craig44/BookDownExample/edit/main/07-references.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
