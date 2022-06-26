@@ -19,9 +19,11 @@ Imports:
     mgcv,
     raster,
     rgeos,
+    Rdpack,
     Matrix (>= 1.2.17)
 Suggests:
     ggplot2
 LinkingTo: 
     TMB
 RoxygenNote: 7.1.1
+RdMacros: Rdpack

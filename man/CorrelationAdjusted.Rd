@@ -7,11 +7,7 @@
 CorrelationAdjusted(y, survey_area)
 }
 \arguments{
-\item{y}{sample data of class "RasterLayer" see an example for how this is created.}
-
-\item{survey_area}{scalar for survey area}
-
-\item{sample_area}{area of each sampling unit which has to be a single value i.e. sampling unit area are all the same}
+\item{y}{sample data (assumed to be densities) of class "RasterLayer" see an example for how this is created.}
 }
 \value{
 Spatial autocorrealtion variance estimator for the poopulation total
@@ -20,5 +16,5 @@ Spatial autocorrealtion variance estimator for the poopulation total
 CorrelationAdjusted
 }
 \details{
-a functon that evaluates the variacnce estimator for population total, with an adjustment based on the spatial autocorrelation, based on Morans I
+calculate the correlation adjusted variance estimator for the mean. This adjusts the simple random sampling estimator using an adjustment based on the spatial autocorrelation, based on Morans I
 }
