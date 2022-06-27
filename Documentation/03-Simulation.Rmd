@@ -102,7 +102,6 @@ coordinates( Data ) <- ~ x_mid + y_mid
 sample_raster <- rasterize(x = cbind(sample_x_coord, sample_y_coord), y = proj_raster,  field = 1, fun = "sum", na.rm = T)
 ## calculate polygons
 samp_poly <- rasterToPolygons(sample_raster, dissolve=TRUE)
-proj_indicator = apply(gContains(samp_poly,proj_poly, byid = TRUE), 1, any)
 ```
 
 ## SRS estimator
@@ -136,4 +135,41 @@ boxlet_estimator_single = BoxletEstimator(spatial_df = Data, survey_polygon = su
 names(boxlet_estimator_single)
 ## standard error
 sqrt(boxlet_estimator_single$var_total_boxlet)
+```
+## Geostatistical estimator
+
+Build a mesh INLA mesh
+
+```{r r_mesh, include  = TRUE}
+mesh = inla.mesh.2d(max.edge = c(3,20), n =15, cutoff = 6, 
+      loc.domain = SpatialPoints( data.frame(x = c(0,0,100,100),y= c(0,100,100,0))))
+## don't give data points to the inla.mesh.2d function
+## the triangulation mesh calculation will want to put all the vertices 
+## at observation locations due to the systematice shape
+plot(mesh)
+points(Data, col = "red", pch = 16)
+```
+
+Identify which cells to get the model to predict for
+
+```{r r_proj, include  = TRUE}
+proj_indicator = apply(gContains(samp_poly,proj_poly, byid = TRUE), 1, any)
+## visualise
+colors <- c("Domain" = "gold", "Samples" = "blue", "Zoom" = "red", "Projection" = "black")
+pop_outline = fortify(proj_poly)
+sample_outline = fortify(samp_poly)
+domain_area = data.frame(x = c(survey_xlim[1],survey_xlim[2], survey_xlim[2], survey_xlim[1],survey_xlim[1]),
+                         y = c(survey_ylim[1],survey_ylim[1],survey_ylim[2],survey_ylim[2],survey_ylim[1]))
+
+ggplot() +
+  #geom_raster(data = proj_df, aes(x = x, y = y), col="gold", fill ="gold") +
+  coord_fixed() +
+  geom_path(aes(x = x, y = y, col="Domain"), data = domain_area, 
+          size=1) +
+  geom_path(aes(x = long, y = lat, group = group, col="Samples"), data = sample_outline, 
+            size=1) +
+  labs(x = "x", y = "y", color = "")+ 
+  theme_void() +
+  theme(legend.position="bottom", legend.text = element_text( size = 16)) +
+  scale_color_manual(values = colors[1:3])
 ```
