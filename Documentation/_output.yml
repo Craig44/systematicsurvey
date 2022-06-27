@@ -5,8 +5,8 @@ bookdown::gitbook:
       before: |
         <li><a href="./">systematicsurvey R package</a></li>
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/Craig44/systematicsurvey
+        <li><a href="https://github.com/Craig44/systematicsurvey" target="blank">Github repo</a></li>
+    edit: https://github.com/Craig44/systematicsurvey/edit/main/%s
     download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:
