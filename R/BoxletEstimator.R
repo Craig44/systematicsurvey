@@ -1,6 +1,6 @@
 #' BoxletEstimator 
 #' @details
-#' a functon that replicates the Boxlet variance estimator from Fewster 2011
+#' a functon that replicates the Boxlet variance estimator from \insertCite{fewster2011variance}{systematicsurvey}
 #' Assumes rectangle/square survey region, assumes width and height of sampling units are constant quadrants or transects
 #' @param spatial_df spatial data frame, with coordinates for midpoints. Attributes of spatial_df, should have coordinates with coordinate reference, along with width and height of each sampling unit.
 #' @param survey_polygon a spatial polygon that is the same coordinate reference as data. 
@@ -17,7 +17,9 @@
 #' @importFrom sp coordinates
 #' @importFrom mgcv gam
 #' @return boxlet info, and variance estimator for total
-
+#' @references
+#' \insertAllCited{}
+#' 
 BoxletEstimator = function(spatial_df, survey_polygon, quad_width, quad_height, quad_x_spacing, quad_y_spacing, boxlet_sampling_frame = NULL, boxlet_frame_settings = NULL, trace = F) {
   if(trace)
     cat("Entering: BoxletEstimator()\n")

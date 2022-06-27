@@ -30,7 +30,7 @@ enum valid_family {
   poisson = 0,
   negative_binomial = 1,
   gaussian    = 2,
-  gamma  = 3
+  gamma_fam  = 3
 };
 
 /*
@@ -91,7 +91,7 @@ Type GMRFModel(objective_function<Type>* obj) {
   PARAMETER( ln_kappa );                  // spatial decay/range parameter
   PARAMETER( ln_tau );                    // precision of GMRF covariance, note marginal variance of the GMRF is a function of kappa and tau 
   PARAMETER_VECTOR( omega );              // spatial random effect/latent variables
-  PARAMETER( ln_phi );                    // overdispersion parameter, cv = gamma, sd = normal, phi = Neg Bin
+  PARAMETER( ln_phi );                    // overdispersion parameter, shape = gamma, sd = normal, phi = Neg Bin
 
   int i;
   vector<Type> nll(2);
@@ -146,7 +146,7 @@ Type GMRFModel(objective_function<Type>* obj) {
         tmp_loglik = dnbinom_robust(y(i), s1 , s2, true);
         //SIMULATE{y(i) = rbinom(Type(1), mu(i));}
         break;
-      case gamma:
+      case gamma_fam:
         s1 = phi;           // shape
         s2 = mu(i) / phi;   // scale
         tmp_loglik = dgamma(y(i), s1, s2, true);
@@ -185,7 +185,7 @@ Type GMRFModel(objective_function<Type>* obj) {
           s1 = mu_proj(i) * (Type(1.0) + mu_proj(i) / phi); // over_dispersion + lambda_sim;
           y_sim(i) = rnbinom2(mu_proj(i), s1);
           break;
-        case gamma:
+        case gamma_fam:
           s1 = phi;           // shape
           s2 = mu_proj(i) / phi;   // scale
           y_sim(i) = rgamma(s1, s2);

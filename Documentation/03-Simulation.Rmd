@@ -4,6 +4,7 @@
 library(ggplot2)
 library(INLA)
 library(raster)
+library(rgeos)
 library(systematicsurvey)
 # can install it using 
 ## devtools::install_github("Craig44/systematicsurvey")
@@ -33,6 +34,7 @@ quad_x_spacing = 10 ## spacings between quadrant/transect midpoints
 quad_y_spacing = 10 ## spacings between quadrant/transect midpoints
 sampling_unit_area = quad_width * quad_height
 boxlet_diameter = quad_width ## will define how many boxlets there are, should be less than quadrant size
+kappa = survey_area / sampling_unit_area ## sampling fraction
 ## variables that define the toal number of sampling units
 n_col = max(survey_xlim) /  quad_x_spacing # r
 n_row = max(survey_ylim) /  quad_y_spacing # r
@@ -80,17 +82,21 @@ sample_y_coord = upper_y - quad_height / 2
 sample_x_coord = upper_x - quad_width / 2
 ## data frame
 Data = data.frame(x_mid = sample_x_coord, y_mid = sample_y_coord)
-Data$count = NA
+Data$y_i = NA
 counter = 1;
 ## population in sampling units
 for(i in 1:length(upper_x)) {
-  Data$count[i] = sum(x_coord >= (upper_x[i] - quad_width) & x_coord <= upper_x[i] 
+  Data$y_i[i] = sum(x_coord >= (upper_x[i] - quad_width) & x_coord <= upper_x[i] 
                       & y_coord >= (upper_y[i]  - quad_height) & y_coord <= upper_y[i])
 }
 Data$area = quad_height * quad_height
+## convert to densities
+Data$d_i = Data$y_i / Data$area
+
 ## convert it to spatial data frame
-coordinates( Data ) <- ~ x + y
-## can also add projections
+coordinates( Data ) <- ~ x_mid + y_mid
+## can also add projection of data if working lat longs etc
+# proj4string(Data) <- CRS("+init=epsg:4326")
 
 ## calculate sample raster
 sample_raster <- rasterize(x = cbind(sample_x_coord, sample_y_coord), y = proj_raster,  field = 1, fun = "sum", na.rm = T)
@@ -100,11 +106,19 @@ proj_indicator = apply(gContains(samp_poly,proj_poly, byid = TRUE), 1, any)
 ```
 
 ## SRS estimator
+```{r r_srs, include  = TRUE}
 
+srs_var_hat  = kappa^2 * var(Data@data$d_i) / (nrow(Data@data))
+## standard error
+sqrt(srs_var_hat)
+```
+## Correlation adjusted estimator
+```{r r_boxlet, include  = TRUE}
 
+```
 ## Boxlet estimator
 
-The first thing we need to do is calculate the fine lattice within $\mathcal{D}$ (these lattice points correspond to the centroids of the so-called boxlets). This is done using the `?BoxletEstimatorSamplingFrame` function. This function will return a list containing a fine lattice for all the boxlets.
+The first thing we need to do is calculate the fine lattice within $\mathcal{D}$ (these lattice points correspond to the centroids of the so-called boxlets). This is done using the `?BoxletEstimatorSamplingFrame` function. This function will return a list containing a fine lattice for all the boxlets. The other function that will calculate the boxlet variance is `?BoxletEstimator`. These are applied in the following code chunk.
 
 ```{r r_boxlet, include  = TRUE}
 ## build lattice that we will evaluate the variance over
@@ -119,6 +133,7 @@ boxlet_estimator_single = BoxletEstimator(spatial_df = Data, survey_polygon = su
                                           quad_width = quad_width, quad_height = quad_height, 
                                           quad_x_spacing = quad_x_spacing, quad_y_spacing = quad_y_spacing, 
                                           boxlet_sampling_frame = boxlet_frame_single)
-
-
+names(boxlet_estimator_single)
+## standard error
+sqrt(boxlet_estimator_single$var_total_boxlet)
 ```
