@@ -42,6 +42,9 @@ boxlet info, and variance estimator for total
 BoxletEstimator
 }
 \details{
-a functon that replicates the Boxlet variance estimator from Fewster 2011
+a functon that replicates the Boxlet variance estimator from \insertCite{fewster2011variance}{systematicsurvey}
 Assumes rectangle/square survey region, assumes width and height of sampling units are constant quadrants or transects
+}
+\references{
+\insertAllCited{}
 }

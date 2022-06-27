@@ -61,7 +61,7 @@ pop_raster_pts <- rasterToPoints(pop_raster, spatial = TRUE)
 # Then to a 'conventional' dataframe
 pop_df  <- data.frame(pop_raster_pts)
 ggplot() +
- geom_raster(data = pop_df , aes(x = x, y = y, fill = layer)) + 
+ geom_tile(data = pop_df , aes(x = x, y = y, fill = layer)) + 
     ggtitle("Population") +
   labs(x = "", y = "", fill = "Abundance")
 ```
@@ -113,7 +113,7 @@ srs_var_hat  = kappa^2 * var(Data@data$d_i) / (nrow(Data@data))
 sqrt(srs_var_hat)
 ```
 ## Correlation adjusted estimator
-```{r r_boxlet, include  = TRUE}
+```{r r_cor_adj, include  = TRUE}
 
 ```
 ## Boxlet estimator
