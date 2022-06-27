@@ -1,5 +1,5 @@
-# spatialsurvey
-An R package containing a range of estimators for the mean or total of a population. The aim is to provide
+# Two dimensional systematic survey estimators
+A R package containing a range of estimators for the mean or total of a population. The aim is to provide
 easy to use tools for two-dimensional systematic surveys that do not have design-based estimators. This is the case
 for two-dimensional systematic surveys with only a single primary sampling unit (PSU).
 ## Overview
