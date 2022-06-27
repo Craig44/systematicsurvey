@@ -1,3 +1,5 @@
+eq:totvar
+eq:totalestimator
 introduction
 two-dimensional-systematic-surveys
 estimatrs
@@ -6,5 +8,8 @@ post-stratification-design-based
 correlation-adjustment-hybrid
 boxlet-estimator-hybrid
 geostatistical-model-based-estimator-model-based
-model-based-estimators
 simulations-with-systematicsurvey
+srs-estimator
+correlation-adjusted-estimator
+boxlet-estimator
+geostatistical-estimator

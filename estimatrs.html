@@ -23,7 +23,7 @@
 <meta name="author" content="C.Marsh" />
 
 
-<meta name="date" content="2022-06-26" />
+<meta name="date" content="2022-06-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="two-dimensional-systematic-surveys.html"/>
-<link rel="next" href="model-based-estimators.html"/>
+<link rel="next" href="simulations-with-systematicsurvey.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -49,13 +49,98 @@
 
 
 
-<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 
 
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
 
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -70,23 +155,29 @@
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">systematicsurvey R package</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
 <li class="chapter" data-level="2" data-path="two-dimensional-systematic-surveys.html"><a href="two-dimensional-systematic-surveys.html"><i class="fa fa-check"></i><b>2</b> Two dimensional systematic surveys</a></li>
-<li class="chapter" data-level="3" data-path="estimatrs.html"><a href="estimatrs.html"><i class="fa fa-check"></i><b>3</b> Estimators</a><ul>
+<li class="chapter" data-level="3" data-path="estimatrs.html"><a href="estimatrs.html"><i class="fa fa-check"></i><b>3</b> Estimators</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="estimatrs.html"><a href="estimatrs.html#simple-random-sample-design-based"><i class="fa fa-check"></i><b>3.1</b> Simple Random Sample (design-based)</a></li>
 <li class="chapter" data-level="3.2" data-path="estimatrs.html"><a href="estimatrs.html#post-stratification-design-based"><i class="fa fa-check"></i><b>3.2</b> Post-stratification (design-based)</a></li>
 <li class="chapter" data-level="3.3" data-path="estimatrs.html"><a href="estimatrs.html#correlation-adjustment-hybrid"><i class="fa fa-check"></i><b>3.3</b> Correlation adjustment (hybrid)</a></li>
 <li class="chapter" data-level="3.4" data-path="estimatrs.html"><a href="estimatrs.html#boxlet-estimator-hybrid"><i class="fa fa-check"></i><b>3.4</b> Boxlet estimator (hybrid)</a></li>
 <li class="chapter" data-level="3.5" data-path="estimatrs.html"><a href="estimatrs.html#geostatistical-model-based-estimator-model-based"><i class="fa fa-check"></i><b>3.5</b> Geostatistical model-based estimator (model-based)</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="model-based-estimators.html"><a href="model-based-estimators.html"><i class="fa fa-check"></i><b>4</b> Model-based estimators</a></li>
-<li class="chapter" data-level="5" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html"><i class="fa fa-check"></i><b>5</b> Simulations with systematicsurvey</a></li>
+<li class="chapter" data-level="4" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html"><i class="fa fa-check"></i><b>4</b> Simulations with systematicsurvey</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html#srs-estimator"><i class="fa fa-check"></i><b>4.1</b> SRS estimator</a></li>
+<li class="chapter" data-level="4.2" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html#correlation-adjusted-estimator"><i class="fa fa-check"></i><b>4.2</b> Correlation adjusted estimator</a></li>
+<li class="chapter" data-level="4.3" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html#boxlet-estimator"><i class="fa fa-check"></i><b>4.3</b> Boxlet estimator</a></li>
+<li class="chapter" data-level="4.4" data-path="simulations-with-systematicsurvey.html"><a href="simulations-with-systematicsurvey.html#geostatistical-estimator"><i class="fa fa-check"></i><b>4.4</b> Geostatistical estimator</a></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+<li><a href="https://github.com/Craig44/systematicsurvey" target="blank">Github repo</a></li>
 
 </ul>
 
@@ -105,19 +196,19 @@
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="estimatrs" class="section level1 hasAnchor">
+<div id="estimatrs" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Estimators<a href="estimatrs.html#estimatrs" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="simple-random-sample-design-based" class="section level2 hasAnchor">
+<div id="simple-random-sample-design-based" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> Simple Random Sample (design-based)<a href="estimatrs.html#simple-random-sample-design-based" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The simplest approach is to treat the data as if all points were collected from a SRS design, and to use the usual SRS variance estimator,</p>
 <p><span class="math display">\[\begin{equation}\label{eq:srs_var}
 \widehat{\rm var}_{srs}(\bar{y}) = \frac{s^2_y}{n} = \frac{1}{n(n - 1)}\sum\limits_{i=1}^n \left(y_i - \bar{y}\right)^2 \ .
 \end{equation}\]</span></p>
-<p>Several simulation studies have demonstrated that this estimator tends to over-estimate the true variance, and the over-estimation can be substantial when positive autocorrelation exists <span class="citation">(Fewster <a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>; Dunn and Harrison <a href="#ref-dunn1993two" role="doc-biblioref">1993</a>)</span>.</p>
+<p>Several simulation studies have demonstrated that this estimator tends to over-estimate the true variance, and the over-estimation can be substantial when positive autocorrelation exists <span class="citation">(<a href="#ref-fewster2011variance" role="doc-biblioref">R. M. Fewster 2011</a>; <a href="#ref-dunn1993two" role="doc-biblioref">Dunn and Harrison 1993</a>)</span>.</p>
 </div>
-<div id="post-stratification-design-based" class="section level2 hasAnchor">
+<div id="post-stratification-design-based" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Post-stratification (design-based)<a href="estimatrs.html#post-stratification-design-based" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>This class of estimators was proposed by <span class="citation">Wolter (<a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>)</span> and has been extended to systematic spatial surveys e.g., <span class="citation">Dunn and Harrison (<a href="#ref-dunn1993two" role="doc-biblioref">1993</a>)</span> <span class="citation">Fewster (<a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>)</span>, <span class="citation">Millar and Olsen (<a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>)</span>. Each stratum contains a fixed number of neighbouring sampled units from the systematic design, and the stratified random sample variance estimator of <span class="math inline">\(\bar{y}\)</span> is used <span class="citation">(Fewster et al. <a href="#ref-fewster2009estimating" role="doc-biblioref">2009</a>)</span> (this is ad-hoc because stratified designs assume simple random sampling within strata). <span class="citation">(Millar and Olsen <a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>)</span> provided a variation on this approach, by showing that it could be applied using strata that overlapped.</p>
+<p>This class of estimators was proposed by <span class="citation">Wolter (<a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>)</span> and has been extended to systematic spatial surveys e.g., <span class="citation">Dunn and Harrison (<a href="#ref-dunn1993two" role="doc-biblioref">1993</a>)</span> <span class="citation">R. M. Fewster (<a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>)</span>, <span class="citation">Millar and Olsen (<a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>)</span>. Each stratum contains a fixed number of neighbouring sampled units from the systematic design, and the stratified random sample variance estimator of <span class="math inline">\(\bar{y}\)</span> is used <span class="citation">(<a href="#ref-fewster2009estimating" role="doc-biblioref">Rachel M. Fewster et al. 2009</a>)</span> (this is ad-hoc because stratified designs assume simple random sampling within strata). <span class="citation">(<a href="#ref-millar1995abundance" role="doc-biblioref">Millar and Olsen 1995</a>)</span> provided a variation on this approach, by showing that it could be applied using strata that overlapped.</p>
 <p>Consider <span class="math inline">\(H\)</span> overlapping strata where <span class="math inline">\(h = (1,2,\dots,H)\)</span> index the strata, and let stratum <span class="math inline">\(h\)</span> contain <span class="math inline">\(n_h\)</span> sampling units<br />
 (in this case <span class="math inline">\(n_h = 4\)</span> in Figure~). %Delete or add Figure
 Let the set of sampling units in strata <span class="math inline">\(h\)</span> be denoted by the set <span class="math inline">\(S_h\)</span>. Then the post-stratified estimate of variance is</p>
@@ -128,15 +219,15 @@ Let the set of sampling units in strata <span class="math inline">\(h\)</span> b
 <span class="math display">\[
 s^2_h = \frac{1}{n_h-1} \sum\limits_{i \in S_h} (y_i - \bar{y_h})^2, \text{ and } w_h = \frac{n_h}{\sum_h n_h} \ . 
 \]</span>
-This formulation follows from <span class="citation">Millar and Olsen (<a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>)</span> and assumes overlapping strata. However, there are alternative overlapping and non-overlapping post-stratified variance estimators (see <span class="citation">D’Orazio (<a href="#ref-d2003estimating" role="doc-biblioref">2003</a>)</span>). These alternative estimators are due in part to their original application for one dimensional systematically sampled data <span class="citation">(Wolter <a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>)</span>. As discussed by <span class="citation">D’Orazio (<a href="#ref-d2003estimating" role="doc-biblioref">2003</a>)</span>, extending these one-dimensional estimators to two-dimensions is not straightforward.</p>
+This formulation follows from <span class="citation">Millar and Olsen (<a href="#ref-millar1995abundance" role="doc-biblioref">1995</a>)</span> and assumes overlapping strata. However, there are alternative overlapping and non-overlapping post-stratified variance estimators (see <span class="citation">D’Orazio (<a href="#ref-d2003estimating" role="doc-biblioref">2003</a>)</span>). These alternative estimators are due in part to their original application for one dimensional systematically sampled data <span class="citation">(<a href="#ref-wolter1984investigation" role="doc-biblioref">Wolter 1984</a>)</span>. As discussed by <span class="citation">D’Orazio (<a href="#ref-d2003estimating" role="doc-biblioref">2003</a>)</span>, extending these one-dimensional estimators to two-dimensions is not straightforward.</p>
 <div class="figure">
 <img src="Figures/overlapping_strata.jpeg" id="fig:overlapping" style="width:50.0%" alt="" />
 <p class="caption">Example of systematic survey. Blue rectangles are sampling units</p>
 </div>
 </div>
-<div id="correlation-adjustment-hybrid" class="section level2 hasAnchor">
+<div id="correlation-adjustment-hybrid" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Correlation adjustment (hybrid)<a href="estimatrs.html#correlation-adjustment-hybrid" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Defined in <span class="citation">Wolter (<a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>)</span> and investigated for spatial systematic samples <span class="citation">(Ambrosio Flores, Iglesias Martı́nez, and Marı́n Ferrer <a href="#ref-ambrosio2003systematic" role="doc-biblioref">2003</a>; Strand <a href="#ref-strand2017study" role="doc-biblioref">2017</a>; Brus and Saby <a href="#ref-brus2016approximating" role="doc-biblioref">2016</a>; McGarvey, Burch, and Matthews <a href="#ref-mcgarvey2016precision" role="doc-biblioref">2016</a>)</span>, this estimator makes an adjustment to <span class="math inline">\(Var_{srs}(\bar{y})\)</span> (Equation~) based on the amount of spatial auto-correlation that exists in the systematic sample.</p>
+<p>Defined in <span class="citation">Wolter (<a href="#ref-wolter1984investigation" role="doc-biblioref">1984</a>)</span> and investigated for spatial systematic samples <span class="citation">(<a href="#ref-ambrosio2003systematic" role="doc-biblioref">Ambrosio Flores, Iglesias Martı́nez, and Marı́n Ferrer 2003</a>; <a href="#ref-strand2017study" role="doc-biblioref">Strand 2017</a>; <a href="#ref-brus2016approximating" role="doc-biblioref">Brus and Saby 2016</a>; <a href="#ref-mcgarvey2016precision" role="doc-biblioref">McGarvey, Burch, and Matthews 2016</a>)</span>, this estimator makes an adjustment to <span class="math inline">\(Var_{srs}(\bar{y})\)</span> (Equation~) based on the amount of spatial auto-correlation that exists in the systematic sample.</p>
 <p><span class="math display">\[\begin{align}\label{eq:adjust_corr}
 \widehat{\rm var}_{adj}(\bar{y}) =&amp;  \widehat{\rm var}_{srs}(\bar{y})  \bigg[1 + \frac{2}{ln({\rho})} + \frac{2}{({\rho}^{-1} - 1)}\bigg]&amp; \text{if }{\rho} &gt; 0\\
 =&amp; \widehat{\rm var}_{srs}(\bar{y})&amp; \text{if }{\rho}  \leq 0 \ .\nonumber
@@ -144,40 +235,40 @@ This formulation follows from <span class="citation">Millar and Olsen (<a href="
 %,
 Here, <span class="math inline">\({\rho}\)</span> is often substituted for by an estimate of global spatial-autocorrelation such as the commonly used Morans I .</p>
 </div>
-<div id="boxlet-estimator-hybrid" class="section level2 hasAnchor">
+<div id="boxlet-estimator-hybrid" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Boxlet estimator (hybrid)<a href="estimatrs.html#boxlet-estimator-hybrid" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The boxlet method proposed by <span class="citation">Fewster (<a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>)</span>} fits a density surface to the spatial domain <span class="math inline">\(\mathcal{D}\)</span> using a two-dimensional generalised additive model (GAM) <span class="citation">(Wood <a href="#ref-wood2017generalized" role="doc-biblioref">2017</a>)</span>. For any possible location, <span class="math inline">\(b\)</span>, of the first quadrat, this enables calculation of the expected total count within the sampled quadrats, <span class="math inline">\(\eta_b\)</span> and within <span class="math inline">\(\mathcal{D}\)</span>, <span class="math inline">\(\eta_\mathcal{D}\)</span>. This calculation is done using finite approximation over a fine lattice within <span class="math inline">\(\mathcal{D}\)</span> (these lattice points correspond to the centroids of the so-called boxlets). Let <span class="math inline">\(p_b=\eta_b/\eta_\mathcal{D}\)</span> denote the proportion of the expected total count that is expected within the sampled quadrats.</p>
-<p>Let <span class="math inline">\(y^+=\sum_{i=1}^n y_i\)</span> be the number of individuals counted in the systematic sample. The boxlet method partitions the variance of <span class="math inline">\(y^+\)</span> using the law of total variance (Equation~).
+<p>The boxlet method proposed by <span class="citation">R. M. Fewster (<a href="#ref-fewster2011variance" role="doc-biblioref">2011</a>)</span>} fits a density surface to the spatial domain <span class="math inline">\(\mathcal{D}\)</span> using a two-dimensional generalised additive model (GAM) <span class="citation">(<a href="#ref-wood2017generalized" role="doc-biblioref">Wood 2017</a>)</span>. For any possible location, <span class="math inline">\(b\)</span>, of the first quadrat, this enables calculation of the expected total count within the sampled quadrats, <span class="math inline">\(\eta_b\)</span> and within <span class="math inline">\(\mathcal{D}\)</span>, <span class="math inline">\(\eta_\mathcal{D}\)</span>. This calculation is done using finite approximation over a fine lattice within <span class="math inline">\(\mathcal{D}\)</span> (these lattice points correspond to the centroids of the so-called boxlets). Let <span class="math inline">\(p_b=\eta_b/\eta_\mathcal{D}\)</span> denote the proportion of the expected total count that is expected within the sampled quadrats.</p>
+<p>Let <span class="math inline">\(y^+=\sum_{i=1}^n y_i\)</span> be the number of individuals counted in the systematic sample. The boxlet method partitions the variance of <span class="math inline">\(y^+\)</span> using the law of total variance (Equation <a href="estimatrs.html#eq:totvar">(3.1)</a>).
 The first term (<span class="math inline">\({\rm var}_b(E[y^+|b])\)</span>) is the variance in the expected value of <span class="math inline">\(y^+\)</span> due to the possible starting position, <span class="math inline">\(b\)</span>, of the first quadrat. The second component (<span class="math inline">\(E_b[{\rm var}(y^+|b)]\)</span>) quantifies the expected (over <span class="math inline">\(b\)</span>) magnitude of the variability in <span class="math inline">\(y^+\)</span> for a given <span class="math inline">\(b\)</span>,</p>
-<p><span class="math display">\[\begin{equation}\label{eq:tot_var}
-{\rm var}(y^+) = {\rm var}_{b}(E[y^+|b]) + E_{b}[{\rm var}(y^+|b)] \ .
+<p><span class="math display" id="eq:totvar">\[\begin{equation}
+{\rm var}(y^+) = {\rm var}_{b}(E[y^+|b]) + E_{b}[{\rm var}(y^+|b)]  
+\tag{3.1}
 \end{equation}\]</span></p>
 <p>Under the assumption that the counts in each quadrat are Poisson distributed, then given <span class="math inline">\(b\)</span> it follows that <span class="math inline">\(y^+\)</span> is binomially distributed according to a <span class="math inline">\({\rm Bin}(N,p_b)\)</span> distribution. This gives
 <span class="math display">\[\begin{align}
 {\rm var}(y^+) &amp;=  {\rm var}_{b}(N p_b) + E_{b}[Np_b(1 - p_b)] \nonumber \\
 &amp;=  E_{b}[N^2 p_b^2] + E_{b}[N p_b]^2 
-+ E_{b}[Np_b(1 - p_b)] \label{eq:BoxletVar} \ .
++ E_{b}[Np_b(1 - p_b)] \label{eq:BoxletVar} 
 \end{align}\]</span></p>
-<p>The boxlet method estimates () by substituting <span class="math inline">\(N\)</span> with <span class="math inline">\(\widehat{N}\)</span>, and numerically evaluating the <span class="math inline">\(E_b\)</span> and <span class="math inline">\({\rm var}_b\)</span> terms (that is, with respect to variability in <span class="math inline">\(p_b\)</span>) over all boxlet centroids within the scope of placement of the first quadrat. This leads to the boxlet variance estimator <span class="math inline">\(y^+\)</span> and hence for <span class="math inline">\(\bar{y}\)</span>,
+<p>The boxlet method estimates <span class="math inline">\({\rm var}(y^+)\)</span> by substituting <span class="math inline">\(N\)</span> with <span class="math inline">\(\widehat{N}\)</span>, and numerically evaluating the <span class="math inline">\(E_b\)</span> and <span class="math inline">\({\rm var}_b\)</span> terms (that is, with respect to variability in <span class="math inline">\(p_b\)</span>) over all boxlet centroids within the scope of placement of the first quadrat. This leads to the boxlet variance estimator <span class="math inline">\(y^+\)</span> and hence for <span class="math inline">\(\bar{y}\)</span>,
 <span class="math display">\[\begin{equation}
 \widehat{\rm var}_{box}(\bar{y}) =  \frac{\widehat{\rm var}_{box}(y^+)}{n^2}
 \end{equation}\]</span></p>
 </div>
-<div id="geostatistical-model-based-estimator-model-based" class="section level2 hasAnchor">
+<div id="geostatistical-model-based-estimator-model-based" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Geostatistical model-based estimator (model-based)<a href="estimatrs.html#geostatistical-model-based-estimator-model-based" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The geostatistical model-based approach partitions the spatial domain <span class="math inline">\(\mathcal{D}\)</span> into <span class="math inline">\(m &gt;&gt; n\)</span> quadrats, with abundances (at the time of the survey) of <span class="math inline">\(\boldsymbol{y}=\{y_i, i= 1, \dots, m\}\)</span>, and hence <span class="math inline">\(N=\sum_i^m y_i\)</span>. The abundances are assumed to be a realisation from a model,
 <span class="math display">\[\begin{equation*}
     \boldsymbol{y} \sim f\left(\boldsymbol{X}, \boldsymbol{\theta}\right) \ ,
 \end{equation*}\]</span></p>
-<p>with auxiliary covariates denoted by <span class="math inline">\(\boldsymbol{X}\)</span> and model parameters denoted by <span class="math inline">\(\boldsymbol{\theta}\)</span>. This natural incorporation of auxiliary covariates is often viewed as an advantage for the model-based approach <span class="citation">(Johnson, Laake, and Ver Hoef <a href="#ref-johnson2010model" role="doc-biblioref">2010</a>; Chambers and Clark <a href="#ref-chambers2012introduction" role="doc-biblioref">2012</a>; Ståhl et al. <a href="#ref-staahl2016use" role="doc-biblioref">2016</a>; Shelton et al. <a href="#ref-shelton2014spatial" role="doc-biblioref">2014</a>)</span>.</p>
+<p>with auxiliary covariates denoted by <span class="math inline">\(\boldsymbol{X}\)</span> and model parameters denoted by <span class="math inline">\(\boldsymbol{\theta}\)</span>. This natural incorporation of auxiliary covariates is often viewed as an advantage for the model-based approach <span class="citation">(<a href="#ref-johnson2010model" role="doc-biblioref">Johnson, Laake, and Ver Hoef 2010</a>; <a href="#ref-chambers2012introduction" role="doc-biblioref">Chambers and Clark 2012</a>; <a href="#ref-staahl2016use" role="doc-biblioref">Ståhl et al. 2016</a>; <a href="#ref-shelton2014spatial" role="doc-biblioref">Shelton et al. 2014</a>)</span>.</p>
 <p>Let <span class="math inline">\(\Omega\)</span> be the index of the set of <span class="math inline">\(n\)</span> sampling units selected by the systematic survey. The estimate of total population can be decomposed as
-<span class="math display">\[\begin{equation}
-\widehat{N} = \sum\limits_{i \in \Omega} y_i + \sum\limits_{j \notin \Omega} E[y_j| y_i, i \in \Omega] \ .
-(\#eq:total_estimator)
+<span class="math display" id="eq:totalestimator">\[\begin{equation}
+\widehat{N} = \sum\limits_{i \in \Omega} y_i + \sum\limits_{j \notin \Omega} E[y_j| y_i, i \in \Omega] \ .\tag{3.2}
 \end{equation}\]</span>
 The <span class="math inline">\(y_i, i \in \Omega\)</span> are known and so inference on un-sampled units <span class="math inline">\(y_j, j \notin \Omega\)</span> is the goal.</p>
 <p>Geostatistical models have been used with systematic surveys primarily in the acoustic literature <span class="citation">Walline (<a href="#ref-walline_07" role="doc-biblioref">2007</a>)</span>; <span class="citation">Simmonds and Fryer (<a href="#ref-simmonds1996better" role="doc-biblioref">1996</a>)</span> but also in land cover use <span class="citation">Aune-Lundberg and Strand (<a href="#ref-aune2014comparison" role="doc-biblioref">2014</a>)</span>. These studies used kriging equations for model inference, which differs from the SPDE approach <span class="citation">Lindgren, Rue, and Lindström (<a href="#ref-lindgren2011explicit" role="doc-biblioref">2011</a>)</span> that is used for geostatistical models presented here (see Chatper 7 <span class="citation">Gómez-Rubio (<a href="#ref-gomez2020bayesian" role="doc-biblioref">2020</a>)</span> and <span class="citation">Chang, Guillas, and Fioletov (<a href="#ref-chang2015spatial" role="doc-biblioref">2015</a>)</span> for more detail on the difference between these two approaches). The SPDE approach was chosen for its flexibility in response variable distributions, flexibility in incorporating spatio-temporal GFs, ease of including covariates and availability of convenient software for its implementation, i.e. INLA <span class="citation">Lindgren and Rue (<a href="#ref-rinla_ref" role="doc-biblioref">2015</a>)</span>.</p>
-<p>The software chosen to implement the spatial model, and estimator for the total population (Equation~@ref(eq:total_estimator)) and corresponding variance was Template Model Builder (TMB) <span class="citation">(Kristensen et al. <a href="#ref-tmb" role="doc-biblioref">2016</a>)</span>. TMB was chosen for its ease of implementing bespoke models (Equation~@ref(eq:total_estimator) only involves using a subset of fitted values) and computational speed  required for the purpose of performing 1 000’s of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion, which is commonly known as the generalised delta-method <span class="citation">Millar (<a href="#ref-millar2011maximum" role="doc-biblioref">2011</a>)</span>;<span class="citation">Fournier et al. (<a href="#ref-fournier2012ad" role="doc-biblioref">2012</a>)</span>). TMB also includes the “epsilon” method of bias correction <span class="citation">(Tierney, Kass, and Kadane <a href="#ref-tierney1989fully" role="doc-biblioref">1989</a>; Thorson and Kristensen <a href="#ref-thorson2016implementing" role="doc-biblioref">2016</a>)</span>, which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. <span class="citation">Thorson and Kristensen (<a href="#ref-thorson2016implementing" role="doc-biblioref">2016</a>)</span> showed the “epsilon” method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of <span class="math inline">\({SE}\left[\widehat{N}\right]\)</span>.</p>
+<p>The software chosen to implement the spatial model, and estimator for the total population (Equation~<a href="estimatrs.html#eq:totalestimator">(3.2)</a>) and corresponding variance was Template Model Builder (TMB) <span class="citation">(<a href="#ref-tmb" role="doc-biblioref">Kristensen et al. 2016</a>)</span>. TMB was chosen for its ease of implementing bespoke models (Equation~<a href="estimatrs.html#eq:totalestimator">(3.2)</a> only involves using a subset of fitted values) and computational speed <span class="citation">(<a href="#ref-muff2020accounting" role="doc-biblioref">Muff, Signer, and Fieberg 2020</a>)</span> required for the purpose of performing 1 000’s of simulations. TMB also has many inbuilt features that enhance its applicability. This includes automatic calculation of standard errors for functions of parameters using Taylor series expansion, which is commonly known as the generalised delta-method <span class="citation">Millar (<a href="#ref-millar2011maximum" role="doc-biblioref">2011</a>)</span>;<span class="citation">Fournier et al. (<a href="#ref-fournier2012ad" role="doc-biblioref">2012</a>)</span>). TMB also includes the “epsilon” method of bias correction <span class="citation">(<a href="#ref-tierney1989fully" role="doc-biblioref">Tierney, Kass, and Kadane 1989</a>; <a href="#ref-thorson2016implementing" role="doc-biblioref">Thorson and Kristensen 2016</a>)</span>, which approximates the integral that equates to the expectation of non-linear functions of random-effect variables. <span class="citation">Thorson and Kristensen (<a href="#ref-thorson2016implementing" role="doc-biblioref">2016</a>)</span> showed the “epsilon” method to be superior to other bias correction methods commonly used within fisheries models for estimating abundance. Using these estimators of variance, TMB will automatically report estimates of <span class="math inline">\({SE}\left[\widehat{N}\right]\)</span>.</p>
 <p>For spatially variable populations it is often better to estimate and provide standard errors for <span class="math inline">\(\log \widehat{N}\)</span>, which has generally been found to be more quadratic <span class="citation">Bolker et al. (<a href="#ref-bolker2013strategies" role="doc-biblioref">2013</a>)</span>. When <span class="math inline">\(\log \widehat{N}\)</span> is of focus, confidence intervals are</p>
 <p><span class="math display">\[\begin{equation}
     CI_{95\%} = exp \left(\log \widehat{N} \pm 1.96 \ \widehat{SE}\left[\log \widehat{N}\right]\right) \ .
@@ -187,90 +278,93 @@ The <span class="math inline">\(y_i, i \in \Omega\)</span> are known and so infe
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div id="refs" class="references">
-<div id="ref-ambrosio2003systematic">
-<p>Ambrosio Flores, Luis, Luis Iglesias Martı́nez, and Carmen Marı́n Ferrer. 2003. “Systematic Sample Design for the Estimation of Spatial Means.” <em>Environmetrics: The Official Journal of the International Environmetrics Society</em> 14 (1): 45–61.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ambrosio2003systematic" class="csl-entry">
+Ambrosio Flores, Luis, Luis Iglesias Martı́nez, and Carmen Marı́n Ferrer. 2003. <span>“Systematic Sample Design for the Estimation of Spatial Means.”</span> <em>Environmetrics: The Official Journal of the International Environmetrics Society</em> 14 (1): 45–61.
 </div>
-<div id="ref-aune2014comparison">
-<p>Aune-Lundberg, Linda, and Geir-Harald Strand. 2014. “Comparison of Variance Estimation Methods for Use with Two-Dimensional Systematic Sampling of Land Use/Land Cover Data.” <em>Environmental Modelling &amp; Software</em> 61: 87–97.</p>
+<div id="ref-aune2014comparison" class="csl-entry">
+Aune-Lundberg, Linda, and Geir-Harald Strand. 2014. <span>“Comparison of Variance Estimation Methods for Use with Two-Dimensional Systematic Sampling of Land Use/Land Cover Data.”</span> <em>Environmental Modelling &amp; Software</em> 61: 87–97.
 </div>
-<div id="ref-bolker2013strategies">
-<p>Bolker, Benjamin M, Beth Gardner, Mark Maunder, Casper W Berg, Mollie Brooks, Liza Comita, Elizabeth Crone, et al. 2013. “Strategies for fitting nonlinear ecological models in R, AD Model Builder, and BUGS.” <em>Methods in Ecology and Evolution</em> 4 (6): 501–12.</p>
+<div id="ref-bolker2013strategies" class="csl-entry">
+Bolker, Benjamin M, Beth Gardner, Mark Maunder, Casper W Berg, Mollie Brooks, Liza Comita, Elizabeth Crone, et al. 2013. <span>“<span class="nocase">Strategies for fitting nonlinear ecological models in R, AD Model Builder, and BUGS</span>.”</span> <em>Methods in Ecology and Evolution</em> 4 (6): 501–12.
 </div>
-<div id="ref-brus2016approximating">
-<p>Brus, DJ, and NPA Saby. 2016. “Approximating the Variance of Estimated Means for Systematic Random Sampling, Illustrated with Data of the French Soil Monitoring Network.” <em>Geoderma</em> 279: 77–86.</p>
+<div id="ref-brus2016approximating" class="csl-entry">
+Brus, DJ, and NPA Saby. 2016. <span>“Approximating the Variance of Estimated Means for Systematic Random Sampling, Illustrated with Data of the French Soil Monitoring Network.”</span> <em>Geoderma</em> 279: 77–86.
 </div>
-<div id="ref-chambers2012introduction">
-<p>Chambers, Ray, and Robert Clark. 2012. <em>An Introduction to Model-Based Survey Sampling with Applications</em>. Vol. 37. Oxford University Press.</p>
+<div id="ref-chambers2012introduction" class="csl-entry">
+Chambers, Ray, and Robert Clark. 2012. <em><span class="nocase">An Introduction to Model-Based Survey Sampling with Applications</span></em>. Vol. 37. Oxford University Press.
 </div>
-<div id="ref-chang2015spatial">
-<p>Chang, K-L, S Guillas, and VE Fioletov. 2015. “Spatial Mapping of Ground-Based Observations of Total Ozone.” <em>Atmospheric Measurement Techniques</em> 8 (10): 4487–4505.</p>
+<div id="ref-chang2015spatial" class="csl-entry">
+Chang, K-L, S Guillas, and VE Fioletov. 2015. <span>“Spatial Mapping of Ground-Based Observations of Total Ozone.”</span> <em>Atmospheric Measurement Techniques</em> 8 (10): 4487–4505.
 </div>
-<div id="ref-d2003estimating">
-<p>D’Orazio, Marcello. 2003. “Estimating the Variance of the Sample Mean in Two-Dimensional Systematic Sampling.” <em>Journal of Agricultural, Biological, and Environmental Statistics</em> 8 (3): 280.</p>
+<div id="ref-d2003estimating" class="csl-entry">
+D’Orazio, Marcello. 2003. <span>“Estimating the Variance of the Sample Mean in Two-Dimensional Systematic Sampling.”</span> <em>Journal of Agricultural, Biological, and Environmental Statistics</em> 8 (3): 280.
 </div>
-<div id="ref-dunn1993two">
-<p>Dunn, R, and A R Harrison. 1993. “Two-Dimensional Systematic Sampling of Land Use.” <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 42 (4): 585–601.</p>
+<div id="ref-dunn1993two" class="csl-entry">
+Dunn, R, and A R Harrison. 1993. <span>“Two-Dimensional Systematic Sampling of Land Use.”</span> <em>Journal of the Royal Statistical Society: Series C (Applied Statistics)</em> 42 (4): 585–601.
 </div>
-<div id="ref-fewster2009estimating">
-<p>Fewster, Rachel M, Stephen T Buckland, Kenneth P Burnham, David L Borchers, Peter E Jupp, Jeffrey L Laake, and Len Thomas. 2009. “Estimating the Encounter Rate Variance in Distance Sampling.” <em>Biometrics</em> 65 (1): 225–36.</p>
+<div id="ref-fewster2011variance" class="csl-entry">
+Fewster, R M. 2011. <span>“Variance Estimation for Systematic Designs in Spatial Surveys.”</span> <em>Biometrics</em> 67 (4): 1518–31.
 </div>
-<div id="ref-fewster2011variance">
-<p>Fewster, R M. 2011. “Variance Estimation for Systematic Designs in Spatial Surveys.” <em>Biometrics</em> 67 (4): 1518–31.</p>
+<div id="ref-fewster2009estimating" class="csl-entry">
+Fewster, Rachel M, Stephen T Buckland, Kenneth P Burnham, David L Borchers, Peter E Jupp, Jeffrey L Laake, and Len Thomas. 2009. <span>“Estimating the Encounter Rate Variance in Distance Sampling.”</span> <em>Biometrics</em> 65 (1): 225–36.
 </div>
-<div id="ref-fournier2012ad">
-<p>Fournier, David A, Hans J Skaug, Johnoel Ancheta, James Ianelli, Arni Magnusson, Mark N Maunder, Anders Nielsen, and John Sibert. 2012. “AD Model Builder: Using Automatic Differentiation for Statistical Inference of Highly Parameterized Complex Nonlinear Models.” <em>Optimization Methods and Software</em> 27 (2): 233–49.</p>
+<div id="ref-fournier2012ad" class="csl-entry">
+Fournier, David A, Hans J Skaug, Johnoel Ancheta, James Ianelli, Arni Magnusson, Mark N Maunder, Anders Nielsen, and John Sibert. 2012. <span>“<span>AD</span> Model Builder: Using Automatic Differentiation for Statistical Inference of Highly Parameterized Complex Nonlinear Models.”</span> <em>Optimization Methods and Software</em> 27 (2): 233–49.
 </div>
-<div id="ref-gomez2020bayesian">
-<p>Gómez-Rubio, Virgilio. 2020. <em>Bayesian Inference with Inla</em>. CRC Press.</p>
+<div id="ref-gomez2020bayesian" class="csl-entry">
+Gómez-Rubio, Virgilio. 2020. <em>Bayesian Inference with INLA</em>. CRC Press.
 </div>
-<div id="ref-johnson2010model">
-<p>Johnson, Devin S, Jeffrey L Laake, and Jay M Ver Hoef. 2010. “A Model-Based Approach for Making Ecological Inference from Distance Sampling Data.” <em>Biometrics</em> 66 (1): 310–18.</p>
+<div id="ref-johnson2010model" class="csl-entry">
+Johnson, Devin S, Jeffrey L Laake, and Jay M Ver Hoef. 2010. <span>“A Model-Based Approach for Making Ecological Inference from Distance Sampling Data.”</span> <em>Biometrics</em> 66 (1): 310–18.
 </div>
-<div id="ref-tmb">
-<p>Kristensen, Kasper, Anders Nielsen, Casper W. Berg, Hans Skaug, and Bradley M. Bell. 2016. “TMB: Automatic Differentiation and Laplace Approximation.” <em>Journal of Statistical Software</em> 70 (5): 1–21. <a href="https://doi.org/10.18637/jss.v070.i05">https://doi.org/10.18637/jss.v070.i05</a>.</p>
+<div id="ref-tmb" class="csl-entry">
+Kristensen, Kasper, Anders Nielsen, Casper W. Berg, Hans Skaug, and Bradley M. Bell. 2016. <span>“<span>TMB</span>: Automatic Differentiation and <span>L</span>aplace <span>A</span>pproximation.”</span> <em>Journal of Statistical Software</em> 70 (5): 1–21. <a href="https://doi.org/10.18637/jss.v070.i05">https://doi.org/10.18637/jss.v070.i05</a>.
 </div>
-<div id="ref-rinla_ref">
-<p>Lindgren, Finn, and Håvard Rue. 2015. “Bayesian Spatial Modelling with R-INLA.” <em>Journal of Statistical Software</em> 63 (19): 1–25. <a href="http://www.jstatsoft.org/v63/i19/">http://www.jstatsoft.org/v63/i19/</a>.</p>
+<div id="ref-rinla_ref" class="csl-entry">
+Lindgren, Finn, and Håvard Rue. 2015. <span>“<span>Bayesian Spatial Modelling</span> with <span>R</span>-<span>INLA</span>.”</span> <em>Journal of Statistical Software</em> 63 (19): 1–25. <a href="http://www.jstatsoft.org/v63/i19/">http://www.jstatsoft.org/v63/i19/</a>.
 </div>
-<div id="ref-lindgren2011explicit">
-<p>Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. “An Explicit Link Between Gaussian Fields and Gaussian Markov Random Fields: The Stochastic Partial Differential Equation Approach.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 73 (4): 423–98.</p>
+<div id="ref-lindgren2011explicit" class="csl-entry">
+Lindgren, Finn, Håvard Rue, and Johan Lindström. 2011. <span>“An Explicit Link Between <span>G</span>aussian Fields and <span>G</span>aussian <span>M</span>arkov Random Fields: <span>T</span>he Stochastic Partial Differential Equation Approach.”</span> <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 73 (4): 423–98.
 </div>
-<div id="ref-mcgarvey2016precision">
-<p>McGarvey, Richard, Paul Burch, and Janet M Matthews. 2016. “Precision of Systematic and Random Sampling in Clustered Populations: Habitat Patches and Aggregating Organisms.” <em>Ecological Applications</em> 26 (1): 233–48.</p>
+<div id="ref-mcgarvey2016precision" class="csl-entry">
+McGarvey, Richard, Paul Burch, and Janet M Matthews. 2016. <span>“Precision of Systematic and Random Sampling in Clustered Populations: Habitat Patches and Aggregating Organisms.”</span> <em>Ecological Applications</em> 26 (1): 233–48.
 </div>
-<div id="ref-millar2011maximum">
-<p>Millar, Russell B. 2011. <em>Maximum likelihood estimation and inference: with examples in R, SAS and ADMB</em>. Vol. 111. John Wiley &amp; Sons.</p>
+<div id="ref-millar2011maximum" class="csl-entry">
+Millar, Russell B. 2011. <em><span class="nocase">Maximum likelihood estimation and inference: with examples in R, SAS and ADMB</span></em>. Vol. 111. John Wiley &amp; Sons.
 </div>
-<div id="ref-millar1995abundance">
-<p>Millar, Russell B, and Danette Olsen. 1995. “Abundance of Large Toheroa (<em>Paphies Ventricosa Gray</em>) at Oreti Beach, 1971–90, Estimated from Two-Dimensional Systematic Samples.” <em>New Zealand Journal of Marine and Freshwater Research</em> 29 (1): 93–99.</p>
+<div id="ref-millar1995abundance" class="csl-entry">
+Millar, Russell B, and Danette Olsen. 1995. <span>“Abundance of Large Toheroa (<em>Paphies Ventricosa Gray</em>) at <span>Oreti Beach</span>, 1971–90, Estimated from Two-Dimensional Systematic Samples.”</span> <em>New Zealand Journal of Marine and Freshwater Research</em> 29 (1): 93–99.
 </div>
-<div id="ref-shelton2014spatial">
-<p>Shelton, Andrew Olaf, James T Thorson, Eric J Ward, and Blake E Feist. 2014. “Spatial Semiparametric Models Improve Estimates of Species Abundance and Distribution.” <em>Canadian Journal of Fisheries and Aquatic Sciences</em> 71 (11): 1655–66.</p>
+<div id="ref-muff2020accounting" class="csl-entry">
+Muff, Stefanie, Johannes Signer, and John Fieberg. 2020. <span>“Accounting for Individual-Specific Variation in Habitat-Selection Studies: Efficient Estimation of Mixed-Effects Models Using Bayesian or Frequentist Computation.”</span> <em>Journal of Animal Ecology</em> 89 (1): 80–92.
 </div>
-<div id="ref-simmonds1996better">
-<p>Simmonds, E John, and Robert J Fryer. 1996. “Which Are Better, Random or Systematic Acoustic Surveys? A Simulation Using North Sea Herring as an Example.” <em>ICES Journal of Marine Science</em> 53 (1): 39–50.</p>
+<div id="ref-shelton2014spatial" class="csl-entry">
+Shelton, Andrew Olaf, James T Thorson, Eric J Ward, and Blake E Feist. 2014. <span>“Spatial Semiparametric Models Improve Estimates of Species Abundance and Distribution.”</span> <em>Canadian Journal of Fisheries and Aquatic Sciences</em> 71 (11): 1655–66.
 </div>
-<div id="ref-staahl2016use">
-<p>Ståhl, Göran, Svetlana Saarela, Sebastian Schnell, Sören Holm, Johannes Breidenbach, Sean P Healey, Paul L Patterson, et al. 2016. “Use of Models in Large-Area Forest Surveys: Comparing Model-Assisted, Model-Based and Hybrid Estimation.” <em>Forest Ecosystems</em> 3 (1): 1–11.</p>
+<div id="ref-simmonds1996better" class="csl-entry">
+Simmonds, E John, and Robert J Fryer. 1996. <span>“Which Are Better, Random or Systematic Acoustic Surveys? A Simulation Using North Sea Herring as an Example.”</span> <em>ICES Journal of Marine Science</em> 53 (1): 39–50.
 </div>
-<div id="ref-strand2017study">
-<p>Strand, Geir-Harald. 2017. “A Study of Variance Estimation Methods for Systematic Spatial Sampling.” <em>Spatial Statistics</em> 21: 226–40.</p>
+<div id="ref-staahl2016use" class="csl-entry">
+Ståhl, Göran, Svetlana Saarela, Sebastian Schnell, Sören Holm, Johannes Breidenbach, Sean P Healey, Paul L Patterson, et al. 2016. <span>“Use of Models in Large-Area Forest Surveys: Comparing Model-Assisted, Model-Based and Hybrid Estimation.”</span> <em>Forest Ecosystems</em> 3 (1): 1–11.
 </div>
-<div id="ref-thorson2016implementing">
-<p>Thorson, James T, and Kasper Kristensen. 2016. “Implementing a Generic Method for Bias Correction in Statistical Models Using Random Effects, with Spatial and Population Dynamics Examples.” <em>Fisheries Research</em> 175: 66–74.</p>
+<div id="ref-strand2017study" class="csl-entry">
+Strand, Geir-Harald. 2017. <span>“A Study of Variance Estimation Methods for Systematic Spatial Sampling.”</span> <em>Spatial Statistics</em> 21: 226–40.
 </div>
-<div id="ref-tierney1989fully">
-<p>Tierney, Luke, Robert E Kass, and Joseph B Kadane. 1989. “Fully Exponential Laplace Approximations to Expectations and Variances of Nonpositive Functions.” <em>Journal of the American Statistical Association</em> 84 (407): 710–16.</p>
+<div id="ref-thorson2016implementing" class="csl-entry">
+Thorson, James T, and Kasper Kristensen. 2016. <span>“Implementing a Generic Method for Bias Correction in Statistical Models Using Random Effects, with Spatial and Population Dynamics Examples.”</span> <em>Fisheries Research</em> 175: 66–74.
 </div>
-<div id="ref-walline_07">
-<p>Walline, Paul D. 2007. “Geostatistical simulations of eastern Bering Sea walleye pollock spatial distributions, to estimate sampling precision.” <em>ICES Journal of Marine Science</em> 64 (3): 559–69. <a href="https://doi.org/10.1093/icesjms/fsl045">https://doi.org/10.1093/icesjms/fsl045</a>.</p>
+<div id="ref-tierney1989fully" class="csl-entry">
+Tierney, Luke, Robert E Kass, and Joseph B Kadane. 1989. <span>“Fully Exponential Laplace Approximations to Expectations and Variances of Nonpositive Functions.”</span> <em>Journal of the American Statistical Association</em> 84 (407): 710–16.
 </div>
-<div id="ref-wolter1984investigation">
-<p>Wolter, Kirk M. 1984. “An Investigation of Some Estimators of Variance for Systematic Sampling.” <em>Journal of the American Statistical Association</em> 79 (388): 781–90.</p>
+<div id="ref-walline_07" class="csl-entry">
+Walline, Paul D. 2007. <span>“<span class="nocase">Geostatistical simulations of eastern Bering Sea walleye pollock spatial distributions, to estimate sampling precision</span>.”</span> <em>ICES Journal of Marine Science</em> 64 (3): 559–69. <a href="https://doi.org/10.1093/icesjms/fsl045">https://doi.org/10.1093/icesjms/fsl045</a>.
 </div>
-<div id="ref-wood2017generalized">
-<p>Wood, Simon N. 2017. <em>Generalized Additive Models: An Introduction with R</em>. CRC press. <a href="https://doi.org/10.1201/9781315370279">https://doi.org/10.1201/9781315370279</a>.</p>
+<div id="ref-wolter1984investigation" class="csl-entry">
+Wolter, Kirk M. 1984. <span>“An Investigation of Some Estimators of Variance for Systematic Sampling.”</span> <em>Journal of the American Statistical Association</em> 79 (388): 781–90.
+</div>
+<div id="ref-wood2017generalized" class="csl-entry">
+Wood, Simon N. 2017. <em><span class="nocase">Generalized Additive Models: An Introduction with R</span></em>. CRC press. <a href="https://doi.org/10.1201/9781315370279">https://doi.org/10.1201/9781315370279</a>.
 </div>
 </div>
             </section>
@@ -279,7 +373,7 @@ The <span class="math inline">\(y_i, i \in \Omega\)</span> are known and so infe
         </div>
       </div>
 <a href="two-dimensional-systematic-surveys.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="model-based-estimators.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="simulations-with-systematicsurvey.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -310,7 +404,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/Craig44/BookDownExample/edit/main/01-estimators.Rmd",
+"link": "https://github.com/Craig44/systematicsurvey/edit/main/01-estimators.Rmd",
 "text": "Edit"
 },
 "history": {
