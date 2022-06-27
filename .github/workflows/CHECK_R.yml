@@ -39,6 +39,7 @@ jobs:
             any::devtools
             any::knitr
             any::bookdown
+            any::RcppEigen
           dependencies: '"hard"'
       - name: Install R-INLA
         env:

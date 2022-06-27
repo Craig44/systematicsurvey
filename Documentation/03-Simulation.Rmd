@@ -1,14 +1,124 @@
 # Simulations with systematicsurvey
 
-```{r, include  = TRUE}
+```{r, include  = TRUE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(INLA)
+library(raster)
 library(systematicsurvey)
 # can install it using 
 ## devtools::install_github("Craig44/systematicsurvey")
+
+set.seed(123)
+## Assume a square domain
+survey_xlim = c(0,100)
+survey_ylim = c(0,100)
+# simualted population size
+N = 5e5 
+## spatial distribution
+beta1 = c(4,1)
+beta2 = c(1,4)
+
+survey_area = diff(survey_ylim) * diff(survey_xlim) # Area of survey
+## create a polygon
+s_poly = Polygon(cbind(x = c(survey_xlim[1],survey_xlim[1],survey_xlim[2],survey_xlim[2]), y = c(survey_ylim[1],survey_ylim[2],survey_ylim[2],survey_ylim[1])))
+s_polys = Polygons(list(s_poly),1)
+sp_survey_poly = SpatialPolygons(list(s_polys)) ## add projection coordinater here if you are using
+survey_area = rgeos::gArea(sp_survey_poly)
+survey_polygon = sp_survey_poly
+
+## sampling unit
+quad_width = 0.5
+quad_height = 0.5
+quad_x_spacing = 10 ## spacings between quadrant/transect midpoints
+quad_y_spacing = 10 ## spacings between quadrant/transect midpoints
+sampling_unit_area = quad_width * quad_height
+boxlet_diameter = quad_width ## will define how many boxlets there are, should be less than quadrant size
+## variables that define the toal number of sampling units
+n_col = max(survey_xlim) /  quad_x_spacing # r
+n_row = max(survey_ylim) /  quad_y_spacing # r
+n_strata = n_row * n_col
+n_l = quad_y_spacing / quad_height# l
+n_k = quad_x_spacing / quad_width # k
+n_quads = n_l * n_row * n_col * n_k
+within_rows = rep(1:n_l, n_k)
+within_cols = sort(rep(1:n_k, n_l))
+## lower and upper limits for discrete non-overlapping quadrats
+quad_x = seq(0,max(survey_xlim), by = quad_width)
+quad_y = seq(0,max(survey_ylim), by = quad_height)
+
+# create a raster layer
+proj_raster <- raster(resolution = quad_width, xmn = survey_xlim[1], xmx = survey_xlim[2], ymn = survey_ylim[1], ymx = survey_ylim[2])
+proj_poly <- rasterToPolygons(proj_raster, dissolve=F)
+
+## simulate spatial distribution
+x_coord = rbeta(N, beta1[1], beta1[2]) * max(survey_xlim)
+y_coord = rbeta(N, beta2[1], beta2[2]) * max(survey_ylim)
+## rasterize
+pop_raster <- rasterize(x = cbind(x_coord, y_coord), y = proj_raster,  field = 1, fun = "sum", na.rm = T)
+pop_raster_pts <- rasterToPoints(pop_raster, spatial = TRUE)
+# Then to a 'conventional' dataframe
+pop_df  <- data.frame(pop_raster_pts)
+ggplot() +
+ geom_raster(data = pop_df , aes(x = x, y = y, fill = layer)) + 
+    ggtitle("Population") +
+  labs(x = "", y = "", fill = "Abundance")
 ```
 
+Now simulate a two-dimensional systematic survey with a single PSU.
 
-Simulate a population
+```{r sampling_unit, include  = TRUE}
+PSU = sample(1:length(within_cols), size = 1)
+# convert cols and rows to survey units
+within_x = within_cols[PSU] * quad_width
+within_y = within_rows[PSU] * quad_height
+
+upper_x1 = seq(from = within_x, to = survey_xlim[2], by = quad_x_spacing)
+upper_y1 = seq(from = within_y, to = survey_ylim[2], by = quad_y_spacing)
+upper_x = rep(upper_x1, length(upper_y1))
+upper_y = sort(rep(upper_y1, length(upper_x1)))
+sample_y_coord = upper_y - quad_height / 2
+sample_x_coord = upper_x - quad_width / 2
+## data frame
+Data = data.frame(x_mid = sample_x_coord, y_mid = sample_y_coord)
+Data$count = NA
+counter = 1;
+## population in sampling units
+for(i in 1:length(upper_x)) {
+  Data$count[i] = sum(x_coord >= (upper_x[i] - quad_width) & x_coord <= upper_x[i] 
+                      & y_coord >= (upper_y[i]  - quad_height) & y_coord <= upper_y[i])
+}
+Data$area = quad_height * quad_height
+## convert it to spatial data frame
+coordinates( Data ) <- ~ x + y
+## can also add projections
+
+## calculate sample raster
+sample_raster <- rasterize(x = cbind(sample_x_coord, sample_y_coord), y = proj_raster,  field = 1, fun = "sum", na.rm = T)
+## calculate polygons
+samp_poly <- rasterToPolygons(sample_raster, dissolve=TRUE)
+proj_indicator = apply(gContains(samp_poly,proj_poly, byid = TRUE), 1, any)
+```
+
+## SRS estimator
 
 
+## Boxlet estimator
+
+The first thing we need to do is calculate the fine lattice within $\mathcal{D}$ (these lattice points correspond to the centroids of the so-called boxlets). This is done using the `?BoxletEstimatorSamplingFrame` function. This function will return a list containing a fine lattice for all the boxlets.
+
+```{r r_boxlet, include  = TRUE}
+## build lattice that we will evaluate the variance over
+## for large survey areas can take a few seconds to a minute
+boxlet_frame_single = BoxletEstimatorSamplingFrame(survey_polygon, quad_width = quad_width,
+                                     quad_height = quad_height, quad_x_spacing = quad_x_spacing,
+                                     quad_y_spacing = quad_y_spacing, boxlet_per_sample_width = 1, 
+                                     boxlet_per_sample_height = 1, trace = F)
+
+## use the 
+boxlet_estimator_single = BoxletEstimator(spatial_df = Data, survey_polygon = survey_polygon,
+                                          quad_width = quad_width, quad_height = quad_height, 
+                                          quad_x_spacing = quad_x_spacing, quad_y_spacing = quad_y_spacing, 
+                                          boxlet_sampling_frame = boxlet_frame_single)
 
 
+```
