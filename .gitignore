@@ -6,3 +6,6 @@ src/*.o
 src/*.so
 src/*.dll
 Documentation/_book/
+Documentation/_main_files/
+Documentation/_bookdown_files/
+

@@ -3,10 +3,10 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">A Minimal Book Example</a></li>
+        <li><a href="./">systematicsurvey R package</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/Craig44/BookDownExample/edit/main/%s
+    edit: https://github.com/Craig44/systematicsurvey
     download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:

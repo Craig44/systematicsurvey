@@ -155,17 +155,18 @@ Identify which cells to get the model to predict for
 ```{r r_proj, include  = TRUE}
 proj_indicator = apply(gContains(samp_poly,proj_poly, byid = TRUE), 1, any)
 ## visualise
-colors <- c("Domain" = "gold", "Samples" = "blue", "Zoom" = "red", "Projection" = "black")
+colors <- c("Domain" = "gold", "Samples" = "blue", "Projection" = "black")
 pop_outline = fortify(proj_poly)
 sample_outline = fortify(samp_poly)
 domain_area = data.frame(x = c(survey_xlim[1],survey_xlim[2], survey_xlim[2], survey_xlim[1],survey_xlim[1]),
                          y = c(survey_ylim[1],survey_ylim[1],survey_ylim[2],survey_ylim[2],survey_ylim[1]))
 
 ggplot() +
-  #geom_raster(data = proj_df, aes(x = x, y = y), col="gold", fill ="gold") +
   coord_fixed() +
   geom_path(aes(x = x, y = y, col="Domain"), data = domain_area, 
           size=1) +
+  geom_path(aes(x = long, y = lat, group = group, col="Projection"), data = pop_outline, 
+                size=1) 
   geom_path(aes(x = long, y = lat, group = group, col="Samples"), data = sample_outline, 
             size=1) +
   labs(x = "x", y = "y", color = "")+ 
